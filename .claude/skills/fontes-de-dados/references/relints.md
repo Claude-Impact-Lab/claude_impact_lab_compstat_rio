@@ -6,7 +6,7 @@ Os **Relatórios de Inteligência** (RELINTs) são a camada qualitativa **estrut
 
 - **Diretório:** `dados/relints/`
 - **8 arquivos** `.docx` (Word).
-- ⚠ **Nomes prefixados `Cópia de RI_NNN_...docx`** — apesar do `README.md` listar sem o prefixo. Não confie em listing por nome exato; faça match pelo sufixo (`RI_NNN_<area>.docx`).
+- ⚠ **Nomes podem ter ou não o prefixo `Cópia de `** dependendo da versão do projeto. Use sempre match pelo sufixo (`RI_NNN_<area>.docx`) via glob — não confie em nome exato.
 
 ## Mapeamento RI → área FM
 

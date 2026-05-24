@@ -21,6 +21,7 @@ Nome da área FM (ex: "Botafogo", "Centro", "Bangu").
 1. **`fontes-de-dados/references/poligonos-fm.md`** — resolver nome → polígono + nome canônico.
 2. **`fontes-de-dados/references/ocorrencias.md`** — carregar roubos 2020–2024 dentro do polígono; computar hotspots por grid 50m.
 3. **`fontes-de-dados/references/cameras.md`** — carregar câmeras da área (por `nome_area_fm` canônico); usar como proxy de rota.
+4. **`fontes-de-dados/references/dominio-territorial.md`** — carregar territórios de ORCrim que intersectam a área; classificar cada hotspot top-N por fação dominante.
 
 ## Proxy adotado para "Rota da FM"
 
@@ -53,6 +54,12 @@ Para cada célula no top-N, recupere o **logradouro mais frequente** das ocorrê
 cameras = carregar_cameras_da_area(nome_canonico)
 ```
 
+### Passo 3b: Carregar territórios de ORCrim da área
+
+```python
+territorios = carregar_territorios_da_area(poly)
+```
+
 ### Passo 4: Cruzar — coberto vs descoberto
 
 ```python
@@ -63,6 +70,7 @@ pct_cobertura = 100 * len(cobertas) / len(ocorrencias) if ocorrencias else 0
 E para cada hotspot top-N:
 - distância ao câmera mais próxima
 - classificar como **coberto** (≤100m), **borda** (100–200m), **ponto cego** (>200m).
+- ORCrim dominante via `orcrim_do_hotspot(lat, lng, territorios)` — pode ser `CV`, `Milícia`, `TCP`, `ADA` ou `None` (sem território mapeado).
 
 ### Passo 5: Diagnóstico
 
@@ -98,11 +106,11 @@ Para cada ponto cego no top-5, sugira:
 
 ## Top 5 trechos críticos
 
-| Rank | Logradouro principal | Ocorrências | Câmera ≤100m | Status |
-|---|---|---|---|---|
-| 1 | [Rua / Av] | [N] | [Sim/Não] | [Coberto / Borda / Ponto cego] |
-| 2 | ... | ... | ... | ... |
-| ... | | | | |
+| Rank | Logradouro principal | Ocorrências | Câmera ≤100m | Status | ORCrim |
+|---|---|---|---|---|---|
+| 1 | [Rua / Av] | [N] | [Sim/Não] | [Coberto / Borda / Ponto cego] | [CV / Milícia / TCP / ADA / —] |
+| 2 | ... | ... | ... | ... | ... |
+| ... | | | | | |
 
 ## Ações sugeridas para pontos cegos
 
