@@ -32,7 +32,7 @@ Toda invocação deste skill segue 4 passos:
 1. **Identificar o tipo de output.** O usuário quer (A) relatório completo, (B) uma pergunta específica, ou outra variação? Use o vocabulário do prompt para classificar:
    - "relatório", "análise da área", "resumo executivo" → (A) relatório completo
    - "fatores", "órgãos", "Comlurb/RioLuz/etc.", "iluminação", "vegetação", "PSR" → (B) P4
-   - "rota", "patrulhamento", "ponto cego", "câmera", "trecho crítico" → (B) P1
+   - "rota", "patrulhamento", "ponto cego", "câmera", "trecho crítico", "facção", "ORCrim", "CV", "milícia", "TCP", "ADA" → (B) P1
    - "horário", "QMD", "cobertura", "pico", "noturno" → (B) P2
    - "moto", "modelo de emprego", "modalidade", "efetivo", "dinâmica criminal", "modus operandi" → (B) P3
    - Se ambíguo, peça uma frase para desambiguar antes de prosseguir.
@@ -55,7 +55,7 @@ Toda invocação deste skill segue 4 passos:
 |---|---|
 | "relatório completo", "análise da área", "documento", "resumo executivo" | `relatorio-analitico-area.md` (TODO) |
 | "fatores", "órgão", "responsável", "Comlurb", "RioLuz", "PSR", "iluminação", "vegetação", "plano de ação" | `pergunta-fatores-orgaos.md` |
-| "rota", "patrulhamento", "trecho crítico", "ponto cego", "câmera", "hotspot" | `pergunta-rota-fm.md` |
+| "rota", "patrulhamento", "trecho crítico", "ponto cego", "câmera", "hotspot", "facção", "ORCrim", "CV", "milícia" | `pergunta-rota-fm.md` |
 | "horário", "pico", "QMD", "cobertura", "noturno", "turno" | `pergunta-horario-qmd.md` |
 | "moto", "modalidade", "modelo de emprego", "efetivo", "dinâmica criminal", "modus operandi", "viatura" | `pergunta-modelo-emprego.md` |
 

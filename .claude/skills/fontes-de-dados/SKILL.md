@@ -1,11 +1,11 @@
 ---
 name: fontes-de-dados
-description: Use sempre que precisar ler, filtrar ou analisar qualquer fonte de dado do CompStat Rio — ocorrências criminais (roubos, furtos), Disque Denúncia (denúncias anônimas), RELINTs da Força Municipal (relatórios de inteligência), fatores urbanos (iluminação deficiente, vegetação, pessoas em situação de rua, obstrução de calçada, lixo, comércio irregular, esconderijos), polígonos das 9 áreas FM, ou câmeras municipais. Documenta encoding (latin1 vs utf-8), separadores (`;` vs `,`), decimal (`,` vs `.`), axis swaps (coord_x = latitude no fatores_urbanos!), reprojeção EPSG:4326 → 31983 para distâncias, e como filtrar registros por polígono de área FM. Acione quando o usuário pedir contagens, distribuições, listagens, hotspots, mapeamentos espaciais, ou qualquer manipulação dos CSVs/shapefile do projeto.
+description: Use sempre que precisar ler, filtrar ou analisar qualquer fonte de dado do CompStat Rio — ocorrências criminais (roubos, furtos), Disque Denúncia (denúncias anônimas), RELINTs da Força Municipal (relatórios de inteligência), fatores urbanos (iluminação deficiente, vegetação, pessoas em situação de rua, obstrução de calçada, lixo, comércio irregular, esconderijos), polígonos das 9 áreas FM, câmeras municipais, domínio territorial de facções (CV/Milícia/TCP/ADA) e Censo PSR (pessoas em situação de rua). Documenta encoding (latin1 vs utf-8), separadores (`;` vs `,`), decimal (`,` vs `.`), axis swaps (coord_x = latitude no fatores_urbanos!), reprojeção EPSG:4326 → 31983 para distâncias, e como filtrar registros por polígono de área FM. Acione quando o usuário pedir contagens, distribuições, listagens, hotspots, mapeamentos espaciais, fação/ORCrim por trecho, ou qualquer manipulação dos CSVs/shapefile/xlsx do projeto.
 ---
 
 # Fontes de dados do CompStat Rio
 
-Este projeto tem 6 fontes de dado distintas, com formatos heterogêneos e gotchas conhecidos. Antes de manipular qualquer arquivo, **leia o reference da fonte correspondente** — ele documenta schema, encoding e exemplos.
+Este projeto tem 8 fontes de dado distintas, com formatos heterogêneos e gotchas conhecidos. Antes de manipular qualquer arquivo, **leia o reference da fonte correspondente** — ele documenta schema, encoding e exemplos.
 
 ## Índice de fontes
 
@@ -17,8 +17,10 @@ Este projeto tem 6 fontes de dado distintas, com formatos heterogêneos e gotcha
 | Fatores urbanos | `dados/fatores_urbanos.csv` | Qualitativo estruturado | `references/fatores-urbanos.md` |
 | Polígonos áreas FM | `dados/sh_area_forca/areas_forca_municipal.shp` | Geoespacial | `references/poligonos-fm.md` |
 | Câmeras | `dados/cameras_areas_fm.csv` | Geoespacial | `references/cameras.md` |
+| Domínio territorial ORCrim | `dados/outros dados/dominio_territorial - Extração 1.csv` | Geoespacial (WKT POLYGON) | `references/dominio-territorial.md` |
+| Censo PSR | `dados/outros dados/CPSR_2020_2022_2024.xlsx` | Quantitativo georreferenciado | `references/cpsr-psr.md` |
 
-> Todas as 6 fontes estão documentadas. **Não tente improvisar leitura sem ler o reference correspondente** — os gotchas (encoding, axis swap, decimal vírgula, espaço no filename) vão morder.
+> Todas as 8 fontes estão documentadas. **Não tente improvisar leitura sem ler o reference correspondente** — os gotchas (encoding, axis swap, decimal vírgula, espaço no filename, POLYGON vs POINT, openpyxl ausente) vão morder.
 
 ## Regras transversais
 
@@ -36,9 +38,11 @@ Vale para qualquer manipulação de dado neste projeto, antes de invocar qualque
 Não carregue todos os references — leia só os necessários ao intent:
 
 - **Pergunta sobre fatores urbanos / órgãos responsáveis** → `references/poligonos-fm.md` + `references/fatores-urbanos.md`.
-- **Pergunta sobre volume / hotspots / horário de crimes** → `references/ocorrencias.md` (V2).
-- **Pergunta sobre dinâmica criminal / modus operandi / fuga** → `references/disque-denuncia.md` + `references/relints.md` (V2).
-- **Pergunta sobre cobertura de câmera** → `references/cameras.md` (V2).
+- **Pergunta sobre volume / hotspots / horário de crimes** → `references/ocorrencias.md`.
+- **Pergunta sobre dinâmica criminal / modus operandi / fuga** → `references/disque-denuncia.md` + `references/relints.md`.
+- **Pergunta sobre cobertura de câmera** → `references/cameras.md`.
+- **Pergunta sobre rota FM / trechos críticos / fações nos hotspots** → `references/ocorrencias.md` + `references/cameras.md` + `references/dominio-territorial.md`.
+- **Pergunta sobre PSR / Censo de rua / pessoas em situação de rua** → `references/cpsr-psr.md` + `references/fatores-urbanos.md`.
 - **Mapeamento área → metadado administrativo (AISP, bairro, DP)** → `references/poligonos-fm.md`.
 
 Sempre comece resolvendo o polígono da área (etapa 0); depois carregue o(s) reference(s) do dado-fim.
