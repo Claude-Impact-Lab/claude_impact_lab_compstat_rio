@@ -17,3 +17,9 @@ dist/
 .vscode/
 .idea/
 *.swp
+
+# Secrets / runtime state
+.env
+.env.local
+project/backend/.env
+project/backend/runs/
