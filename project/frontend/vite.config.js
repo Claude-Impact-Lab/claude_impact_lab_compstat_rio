@@ -168,5 +168,12 @@ export default defineConfig({
   server: {
     port: 5173,
     open: true,
+    // Proxy /api → backend FastAPI (project/backend) para evitar CORS na POC.
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+      },
+    },
   },
 })

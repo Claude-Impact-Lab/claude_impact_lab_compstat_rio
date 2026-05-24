@@ -141,12 +141,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header
-        sources={sources}
-        dataset={dataset}
-        referenceDate={referenceDate}
-        onExport={() => showToast('Relatório Analítico de Área gerado (.docx)')}
-      />
+      <Header />
 
       <div className="app-body">
         <Sidebar
