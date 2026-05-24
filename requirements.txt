@@ -1,0 +1,3 @@
+anthropic>=0.92.0
+pyshp>=2.3
+shapely>=2.0
