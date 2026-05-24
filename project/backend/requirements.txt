@@ -10,3 +10,8 @@ anthropic==0.104.1
 sse-starlette>=2.1,<2.2
 pyshp>=2.3
 shapely>=2.0
+# Relatório Analítico (.docx)
+python-docx==1.1.2
+matplotlib==3.9.4
+contextily==1.6.2
+pyproj==3.6.1

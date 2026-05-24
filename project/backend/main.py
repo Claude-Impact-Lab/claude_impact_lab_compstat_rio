@@ -10,14 +10,17 @@ Endpoints:
   GET  /api/build/stream    — stream SSE com progresso do ETL.
   GET  /api/build/status    — snapshot textual do estado (polling-fallback).
   GET  /api/build/result    — payload final do último ETL bem-sucedido.
+  POST /api/report          — gera Relatório Analítico de Área (.docx).
 """
 
 from __future__ import annotations
 
 import os
+import re
+from typing import Any
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import Body, FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 
 # Carrega .env antes de importar módulos que leem env (twitter, anthropic).
@@ -26,6 +29,7 @@ load_dotenv()
 from crawler.models import CrawlerRunResponse  # noqa: E402
 from crawler.pipeline import run as run_pipeline  # noqa: E402
 from routers.build import router as build_router  # noqa: E402
+from report.generator import build_report  # noqa: E402
 
 
 def _allowed_origins() -> list[str]:
@@ -59,3 +63,32 @@ async def crawler_run() -> CrawlerRunResponse:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:  # noqa: BLE001
         raise HTTPException(status_code=500, detail=f"crawler failed: {exc}") from exc
+
+
+def _slugify(text: str) -> str:
+    s = re.sub(r"[^A-Za-z0-9]+", "_", text).strip("_").lower()
+    return s or "area"
+
+
+@app.post("/api/report")
+async def report(payload: dict[str, Any] = Body(...)) -> Response:
+    """Gera o Relatório Analítico de Área no formato do anexo do briefing.
+
+    Body esperado:
+        { "area": {...uma entry de real.json.areas...},
+          "referenceDate": "YYYY-MM-DD" (opcional) }
+    """
+    area = payload.get("area")
+    if not isinstance(area, dict) or "id" not in area:
+        raise HTTPException(status_code=400, detail="payload.area é obrigatório")
+    reference_date = payload.get("referenceDate")
+    try:
+        blob = build_report(area, reference_date)
+    except Exception as exc:  # noqa: BLE001
+        raise HTTPException(status_code=500, detail=f"report failed: {exc}") from exc
+    filename = f"compstat_relatorio_{_slugify(area.get('shortName') or area['id'])}.docx"
+    return Response(
+        content=blob,
+        media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )

@@ -177,6 +177,42 @@ export default function App() {
     setSelectedAreaId(MOCK_AREAS[0].id)
   }
 
+  /**
+   * POST /api/report → recebe .docx do backend e dispara download no browser.
+   * Aplicado nos botões "Exportar Relatório" (header da área) e "Exportar .docx"
+   * (plano de ação).
+   */
+  const exportAreaReport = async (targetArea) => {
+    showToast(`Gerando relatório de ${targetArea.shortName}…`)
+    try {
+      const resp = await fetch('/api/report', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ area: targetArea, referenceDate }),
+      })
+      if (!resp.ok) {
+        const body = await resp.json().catch(() => ({}))
+        throw new Error(body.detail || `HTTP ${resp.status}`)
+      }
+      const blob = await resp.blob()
+      const filename = (resp.headers.get('content-disposition') || '')
+        .match(/filename="([^"]+)"/)?.[1]
+        ?? `compstat_relatorio_${targetArea.id}.docx`
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(url)
+      showToast(`Relatório de ${targetArea.shortName} baixado (.docx)`)
+    } catch (e) {
+      console.error('export failed:', e)
+      showToast(`Falha ao gerar relatório: ${e.message}`)
+    }
+  }
+
   if (dataset === null) {
     return (
       <>
@@ -208,7 +244,7 @@ export default function App() {
         <main className="main">
           <AreaHeader
             area={area}
-            onExport={() => showToast(`Relatório de ${area.shortName} gerado (.docx)`)}
+            onExport={() => exportAreaReport(area)}
           />
 
           <Tabs
@@ -225,7 +261,7 @@ export default function App() {
             {activeTab === 'dinamica' && <CriminalDynamics area={area} />}
             {activeTab === 'coincidencias' && <CoincidencePanel area={area} />}
             {activeTab === 'plano' && (
-              <ActionPlan area={area} onExport={() => showToast('Plano de ação exportado para .docx')} />
+              <ActionPlan area={area} onExport={() => exportAreaReport(area)} />
             )}
           </section>
         </main>
