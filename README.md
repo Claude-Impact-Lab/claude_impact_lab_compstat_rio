@@ -89,6 +89,14 @@ O Claude é o motor cognitivo da plataforma — não um wrapper de chamada únic
 - **Sem fallback silencioso.** Se o `ANTHROPIC_API_KEY` falta ou a API retorna erro, o endpoint devolve 400/503 com mensagem clara — preferimos falhar visível a entregar resultado mockado.
 - **Domínio documentado em skills, não em código.** As armadilhas dos dados (encoding, axis swap, naming inconsistente) vivem nas skills do Claude Code, ficando disponíveis para qualquer pessoa que abrir o repositório com o Claude.
 
+## 🛠️ Usando as skills no Claude Code
+
+As duas skills embarcadas (`.claude/skills/relatorios-compstat/` e `.claude/skills/fontes-de-dados/`) podem ser usadas diretamente no harness para responder perguntas operacionais ou gerar relatórios sem rodar o backend.
+
+Para instruções de setup, exemplos de perguntas e comparação entre a POC e a arquitetura-alvo com MCP tools, veja:
+
+→ **[SKILLS_USAGE_GUIDE.md](SKILLS_USAGE_GUIDE.md)**
+
 ## 🎥 Vídeo demo
 
 > **TODO**
