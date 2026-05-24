@@ -1323,3 +1323,93 @@ button:focus-visible {
   background: #94a3b8;
   background-clip: padding-box;
 }
+
+/* ============================================================
+   Processing overlay (ETL on-demand)
+   ============================================================ */
+
+.processing-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 24px;
+}
+
+.processing-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.28);
+  width: 100%;
+  max-width: 560px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.processing-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.processing-title {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.processing-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.processing-progress { display: flex; flex-direction: column; gap: 8px; }
+.processing-progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
+.processing-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0ea5e9, #06b6d4);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+.processing-progress-meta { font-size: 13px; color: #334155; }
+.processing-progress-meta .muted { color: #94a3b8; }
+
+.processing-current {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 14px;
+  background: #f1f5f9;
+  border-radius: 8px;
+  border-left: 3px solid #0ea5e9;
+}
+.processing-current-phase { font-size: 13px; font-weight: 600; color: #0f172a; }
+.processing-current-detail { font-size: 12px; color: #475569; margin-top: 2px; }
+
+.processing-log { border-top: 1px solid #e2e8f0; padding-top: 14px; }
+.processing-log summary { font-size: 12px; color: #475569; cursor: pointer; user-select: none; font-weight: 500; }
+.processing-log summary .muted { color: #94a3b8; font-weight: 400; }
+.processing-log-pre {
+  margin: 10px 0 0 0;
+  padding: 12px;
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  max-height: 200px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

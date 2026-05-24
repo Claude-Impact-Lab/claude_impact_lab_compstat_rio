@@ -21,6 +21,7 @@ import CoincidencePanel from './components/CoincidencePanel.jsx'
 import ActionPlan from './components/ActionPlan.jsx'
 import Toast from './components/Toast.jsx'
 import UploadScreen from './components/UploadScreen.jsx'
+import ProcessingOverlay from './components/ProcessingOverlay.jsx'
 
 const TABS = [
   { id: 'resumo',        label: 'Resumo Executivo',  icon: FileText,   countKey: null },
@@ -43,6 +44,8 @@ export default function App() {
   const [selectedAreaId, setSelectedAreaId] = useState(MOCK_AREAS[0].id)
   const [activeTab, setActiveTab] = useState('resumo')
   const [toast, setToast] = useState(null)
+  // Live state of the on-demand ETL job (null when not running).
+  const [etlState, setEtlState] = useState(null)
 
   const area = useMemo(
     () => areas.find((a) => a.id === selectedAreaId) ?? areas[0],
@@ -55,26 +58,61 @@ export default function App() {
   }
 
   /**
-   * Loads the pre-processed real dataset from /data/real.json (committed
-   * during the ETL step). Falls back to mock data if the file is missing —
-   * useful when running the frontend standalone.
+   * Loads the real dataset from /data/real.json (already on disk).
+   * Used when the ETL just finished, or as a quick path for testing.
    */
-  const loadRealData = async (modeLabel) => {
+  const consumeRealJson = async () => {
+    const r = await fetch('/data/real.json', { cache: 'no-store' })
+    if (!r.ok) throw new Error('real.json not found')
+    const payload = await r.json()
+    setAreas(payload.areas)
+    setSources(payload.dataSources)
+    setReferenceDate(payload.referenceDate)
+    setSelectedAreaId(payload.areas[0].id)
+    setDataset('real')
+    showToast(`Dados reais ingeridos — referência ${payload.referenceDate}`)
+  }
+
+  /**
+   * On-demand pipeline: hits POST /api/build (the Vite plugin spawns
+   * scripts/build_data.py), then polls GET /api/build until done, then
+   * loads the freshly-written real.json.
+   */
+  const buildAndLoadReal = async () => {
     setLoading(true)
     try {
-      const r = await fetch('/data/real.json', { cache: 'no-store' })
-      if (!r.ok) throw new Error('real.json not found')
-      const payload = await r.json()
-      setAreas(payload.areas)
-      setSources(payload.dataSources)
-      setReferenceDate(payload.referenceDate)
-      setSelectedAreaId(payload.areas[0].id)
-      setDataset('real')
-      showToast(`Dados reais ingeridos — referência ${payload.referenceDate}`)
+      const startResp = await fetch('/api/build', { method: 'POST' })
+      const startBody = await startResp.json().catch(() => ({}))
+      if (!startResp.ok && startResp.status !== 409) {
+        const msg = startBody.message || startBody.error || `HTTP ${startResp.status}`
+        setEtlState({ status: 'error', error: msg, lines: [], calls: 0, totalCalls: 27, startedAt: Date.now() })
+        return
+      }
+
+      setEtlState({ status: 'running', error: null, calls: 0, totalCalls: 27, lines: [], startedAt: Date.now() })
+
+      // Poll every 1.5s
+      while (true) {
+        await new Promise((r) => setTimeout(r, 1500))
+        const sResp = await fetch('/api/build', { cache: 'no-store' })
+        const s = await sResp.json()
+        setEtlState(s)
+        if (s.status === 'done') {
+          await consumeRealJson()
+          setTimeout(() => setEtlState(null), 800)
+          break
+        }
+        if (s.status === 'error') break
+      }
     } catch (e) {
-      console.warn('Falling back to mock data:', e)
-      setDataset('mock')
-      showToast('real.json não encontrado — usando dados mockados')
+      setEtlState({
+        status: 'error',
+        error: `Erro de rede: ${e.message}`,
+        lines: [],
+        calls: 0,
+        totalCalls: 27,
+        startedAt: Date.now(),
+      })
     } finally {
       setLoading(false)
     }
@@ -89,12 +127,15 @@ export default function App() {
 
   if (dataset === null) {
     return (
-      <UploadScreen
-        loading={loading}
-        onContinue={() => loadRealData('upload')}
-        onUseDemo={() => loadRealData('demo')}
-        onUseMock={useMock}
-      />
+      <>
+        <UploadScreen
+          loading={loading}
+          onContinue={buildAndLoadReal}
+          onUseDemo={buildAndLoadReal}
+          onUseMock={useMock}
+        />
+        {etlState && <ProcessingOverlay state={etlState} />}
+      </>
     )
   }
 
