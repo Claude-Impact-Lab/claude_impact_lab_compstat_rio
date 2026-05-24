@@ -99,7 +99,7 @@ Para instruções de setup, exemplos de perguntas e comparação entre a POC e a
 
 ## 🎥 Vídeo demo
 
-> **TODO**
+> [Link do Youtube](https://youtu.be/eJParQdwIRA)
 
 
 **CompStat Rio** | Claude Impact Lab Rio 2026
