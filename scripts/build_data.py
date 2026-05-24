@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import re
 import sys
 import zipfile
@@ -34,6 +35,13 @@ from xml.etree import ElementTree as ET
 import shapefile  # pyshp
 from shapely.geometry import Point, Polygon, MultiPolygon, box
 from shapely.prepared import prep
+
+# LLM synthesis (Claude Opus 4.7) — optional, gated by COMPSTAT_LLM env var.
+# Falls back silently to the template generators below when disabled or on error.
+try:
+    import llm_synthesis
+except ImportError:
+    llm_synthesis = None
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -648,6 +656,66 @@ def gen_dynamics(name, denuncia_data, ocorrencias_count_30d, relints):
     }
 
 
+def _use_llm() -> bool:
+    return (
+        llm_synthesis is not None
+        and llm_synthesis.ENABLED
+        and os.environ.get("ANTHROPIC_API_KEY")
+    )
+
+
+def llm_or_template_executive_summary(name, count_30d, var_pct, factors,
+                                      peak_hours, peak_days, coincidences,
+                                      cameras_count, denuncias_count, relints_count):
+    if _use_llm():
+        try:
+            print(f"    [LLM] resumo executivo · {name}", file=sys.stderr)
+            return llm_synthesis.synthesize_executive_summary(
+                area_name=name,
+                count_30d=count_30d, var_pct=var_pct, factors=factors,
+                peak_hours=peak_hours, peak_days=peak_days,
+                coincidences=coincidences, cameras_count=cameras_count,
+                denuncias_count=denuncias_count, relints_count=relints_count,
+            )
+        except Exception as e:
+            print(f"    [LLM fallback resumo: {e}]", file=sys.stderr)
+    return gen_executive_summary(name, count_30d, var_pct, factors,
+                                 peak_hours, peak_days, coincidences, cameras_count)
+
+
+def llm_or_template_dynamics(name, de, count_30d, rels, factors, peak_hours, peak_days):
+    if _use_llm():
+        try:
+            top_factors = Counter(f["type"] for f in factors).most_common(5)
+            print(f"    [LLM] dinâmica criminal · {name}", file=sys.stderr)
+            return llm_synthesis.synthesize_dynamics(
+                area_name=name,
+                denuncia_data=de,
+                ocorrencias_count_30d=count_30d,
+                relints=rels,
+                top_factors=top_factors,
+                peak_hours=peak_hours,
+                peak_days=peak_days,
+            )
+        except Exception as e:
+            print(f"    [LLM fallback dinâmica: {e}]", file=sys.stderr)
+    return gen_dynamics(name, de, count_30d, rels)
+
+
+def llm_or_template_action_plan(name, coincidences, factors):
+    if _use_llm():
+        try:
+            print(f"    [LLM] plano de ação · {name}", file=sys.stderr)
+            return llm_synthesis.synthesize_action_plan(
+                area_name=name,
+                coincidences=coincidences,
+                factors=factors,
+            )
+        except Exception as e:
+            print(f"    [LLM fallback plano: {e}]", file=sys.stderr)
+    return gen_action_plan(coincidences, factors)
+
+
 def gen_action_plan(coincidences, factors):
     """Generate one action per high-risk coincidence + factor-based remediations per orgao."""
     actions = []
@@ -759,13 +827,15 @@ def main():
             "temporal": {"byDay": by_day, "byHour": by_hour},
             "peakHours": peak_hours,
             "peakDays": peak_days,
-            "executiveSummary": gen_executive_summary(
+            "executiveSummary": llm_or_template_executive_summary(
                 name, oc["count_30d"], var_pct, fa, peak_hours, peak_days,
-                coincidences, len(cams),
+                coincidences, len(cams), de["count_90d"], len(rels),
             ),
-            "dynamics": gen_dynamics(name, de, oc["count_30d"], rels),
+            "dynamics": llm_or_template_dynamics(
+                name, de, oc["count_30d"], rels, fa, peak_hours, peak_days,
+            ),
             "coincidences": coincidences,
-            "actionPlan": gen_action_plan(coincidences, fa),
+            "actionPlan": llm_or_template_action_plan(name, coincidences, fa),
         })
 
     # Stable ordering: by risk desc then by ocorrências desc

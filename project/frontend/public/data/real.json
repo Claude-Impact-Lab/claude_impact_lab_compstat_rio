@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-24T11:40:09",
+  "generatedAt": "2026-05-24T13:34:01",
   "referenceDate": "2025-01-03",
   "windowDays": 90,
   "dataSources": [
@@ -43,7 +43,7 @@
       "bairro": "Centro",
       "center": [
         -22.90850431220342,
-        -43.18487787471024
+        -43.184877874710246
       ],
       "zoom": 16,
       "polygon": [
@@ -2681,46 +2681,49 @@
       "peakDays": "Sáb, Seg, Dom",
       "executiveSummary": [
         {
-          "q": "O horário de pico de roubos coincide com a cobertura atual da FM?",
-          "a": "O pico identificado é 20h – 23h, principalmente em Sáb, Seg, Dom. A QMD padrão termina às 18h em boa parte das áreas — a sobreposição com o pico precisa ser validada na reunião.",
+          "q": "O pico de crime se sobrepõe à janela coberta pela QMD da Força Municipal?",
+          "a": "Não. O pico está concentrado entre 20h e 23h (Sáb, Seg e Dom), enquanto a QMD padrão da FM termina às 18h. As 5 coincidências críticas apontam explicitamente lacuna de janela noturna fora da QMD, exigindo extensão de turno ou reforço noturno dedicado.",
           "sources": [
             "Ocorrências",
             "QMD FM"
           ]
         },
         {
-          "q": "Quais fatores urbanos se sobrepõem à mancha criminal?",
-          "a": "Foram identificados 81 fatores ativos no polígono. O mais frequente é 'Pessoas em situação de rua' (22 ocorrências). 5 hotspots apresentam coincidência crítica.",
+          "q": "Quais fatores urbanos se sobrepõem à mancha criminal e qual é o mais problemático?",
+          "a": "Dos 81 fatores ativos (14 tipos), 'Pessoas em situação de rua' aparece em 4 das 5 coincidências críticas (COIN-PRE-01 a 04) e lidera com 22 registros, sendo o fator mais problemático e demandando atuação da SMAS. Em sobreposição, 'Vegetação encobrindo iluminação pública' (13, Comlurb/RioLuz) aparece em 3 hotspots, 'Comércio irregular' (7, SEOP) em 1 e 'Calçada estreita' (5, Seconserva) em 1.",
           "sources": [
             "Ocorrências",
             "Fatores Urbanos"
           ]
         },
         {
-          "q": "A variação do mês indica intensificação ou queda?",
-          "a": "Foram 56 ocorrências no último mês, variação de +17% em relação ao mês anterior. Tendência de alta — sugere reforço operacional.",
+          "q": "Qual a tendência de ocorrências no último mês e qual a recomendação operacional?",
+          "a": "Tendência de ALTA: 56 ocorrências em 30 dias, +17% vs mês anterior. Recomenda-se priorizar a área no CompStat semanal, deslocar efetivo da FM para a janela 20h–23h (Sáb/Seg/Dom) nos 5 hotspots críticos e acionar SMAS e Comlurb/RioLuz para mitigar os fatores recorrentes.",
           "sources": [
-            "Ocorrências"
+            "Ocorrências",
+            "Fatores Urbanos",
+            "QMD FM"
           ]
         },
         {
-          "q": "Há cobertura de câmeras nos hotspots identificados?",
-          "a": "230 câmeras instaladas no polígono. Cobertura adequada nos principais hotspots.",
+          "q": "Há cobertura de câmeras nos hotspots e existem lacunas?",
+          "a": "A área conta com 230 câmeras instaladas e o payload indica que não há hotspot sem cobertura de câmera. A lacuna identificada nas 5 coincidências críticas é operacional (janela noturna fora da QMD), não de monitoramento por vídeo.",
           "sources": [
+            "Câmeras",
             "Ocorrências",
-            "Câmeras"
+            "QMD FM"
           ]
         }
       ],
       "dynamics": {
-        "modusOperandi": "Padrão criminal heterogêneo — RELINTs locais sugerem alternância entre agentes a pé e em motocicleta, com adaptação ao fluxo de pedestres.",
-        "suspectProfile": "Predominância de indivíduos jovens (heurística sobre denúncias) atuando individualmente ou em dupla; uso recorrente de capacete e roupas neutras para dificultar a identificação.",
-        "escapeRoutes": "Rotas de fuga são detalhadas nos RELINTs específicos da área — 1 RELINT consultado. Padrões recorrentes: vias paralelas com pouca iluminação e acessos a transporte público.",
-        "receivingPoints": "Pontos de receptação reportados pelo Disque Denúncia tendem a se concentrar em comércio informal próximo aos hotspots — recomenda-se cruzamento com operações SEOP em curso.",
+        "modusOperandi": "Predominância de ação a pé, com apoio de motocicletas e bicicletas, conforme RELINT da Av. Presidente Vargas. Alvo principal: transeuntes e usuários do transporte público, com foco em subtração de aparelhos celulares em pontos de ônibus, calçadas, travessias e acessos ao metrô. RELINT também documenta roubos a pedestres com arma branca no trecho entre os nºs 500 e 1.500 da Av. Presidente Vargas, próximo ao metrô Cidade Nova. Amostra do Disque Denúncia aponta ainda ação de cerca de seis adolescentes assaltando carros parados em sinal/engarrafamento, entre 13h e 18h, sob viaduto mencionado. Pico quantitativo das ocorrências está em 20h–23h (Sáb/Seg/Dom), não coincidindo diretamente com a janela 13h–18h descrita na denúncia — indicando coexistência de dinâmicas diurna (oportunista contra veículos retidos) e noturna (contra pedestres). Nenhuma das 11 denúncias menciona explicitamente 'moto' ou 'a pé', portanto a caracterização do meio de deslocamento apoia-se majoritariamente no RELINT.",
+        "suspectProfile": "Dados parciais. RELINT não detalha perfil demográfico individualizado, mencionando apenas circulação de motocicletas com placas adulteradas no corredor da Av. Presidente Vargas. Amostra do Disque Denúncia indica: (i) grupo de cerca de seis adolescentes não identificados atuando sob viaduto citado em assaltos a veículos retidos no sinal; (ii) indivíduos não identificados usando drogas e praticando baderna em vagões do ramal Japeri da SuperVia entre 14h e 16h; (iii) um guardador de veículos nominalmente identificado na calçada próxima à Candelária, descrito como usuário de cocaína atuando às segundas, quartas e sextas. Dados insuficientes para consolidar perfil demográfico agregado (faixa etária, vínculos, reincidência) para o conjunto das 56 ocorrências.",
+        "escapeRoutes": "Rotas explicitamente citadas no RELINT: (i) a própria Av. Presidente Vargas opera como rota de escape após ações em ruas adjacentes, ao longo dos 4,5 km entre Praça da República e Cais do Porto; (ii) vias transversais a cada quadra da Av. Presidente Vargas viabilizam dispersão imediata pós-delito; (iii) cruzamento com a Rua Uruguaiana (altura do nº 580) funciona como eixo de escoamento. Denúncia adicional aponta uso do viaduto mencionado (de Frontin) como ponto de concentração do grupo de adolescentes. Acessos ao transporte público (metrô Cidade Nova/Rua Senador Pompeu, pontos de ônibus da Av. Presidente Vargas e composições da SuperVia ramal Japeri) também figuram como vetores de mobilidade dos autores.",
+        "receivingPoints": "RELINT identifica o Camelódromo da Uruguaiana como principal ponto de receptação, alcançado via cruzamento Av. Presidente Vargas x Rua Uruguaiana (altura do nº 580), descrito como maior polo de receptação de celulares furtados do estado conforme investigações da Polícia Civil. Nenhum outro ponto de receptação concreto é mencionado nos dados fornecidos.",
         "sources": {
           "relints": 1,
           "denuncias": 11,
-          "ocorrencias": 168
+          "ocorrencias": 56
         }
       },
       "coincidences": [
@@ -2773,62 +2776,62 @@
       "actionPlan": [
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 1 — -22.9065, -43.1945 na janela Pico em 20h – 23h, dias Sáb, Seg, Dom",
-          "justification": "25 ocorrências em 90 dias, concentradas em raio de 50m — janela noturna fora da QMD (COIN-PRE-01).",
+          "action": "Estender QMD com patrulhamento ostensivo noturno (20h–23h) aos sábados, domingos e segundas no entorno de -22.9065,-43.1945, com efetivo dedicado ao raio de 50m do hotspot.",
+          "justification": "COIN-PRE-01: 25 ocorrências em 90 dias, risco 99, pico 20h–23h Sáb/Seg/Dom, atualmente fora da QMD.",
           "priority": "alta"
         },
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 2 — -22.903, -43.183 na janela Pico em 20h – 23h, dias Sáb, Seg, Dom",
-          "justification": "9 ocorrências em 90 dias, concentradas em raio de 50m — janela noturna fora da QMD (COIN-PRE-02).",
+          "action": "Criar célula móvel de cobertura noturna integrando os hotspots -22.903,-43.183 e -22.9045,-43.1905, com deslocamento entre pontos durante a janela 20h–23h Sáb/Seg/Dom.",
+          "justification": "COIN-PRE-02 (risco 99, 9 ocorrências) e COIN-PRE-04 (risco 99, 6 ocorrências) compartilham janela noturna fora da QMD.",
           "priority": "alta"
         },
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 3 — -22.904, -43.187 na janela Pico em 20h – 23h, dias Sáb, Seg, Dom",
-          "justification": "6 ocorrências em 90 dias, concentradas em raio de 50m — janela noturna fora da QMD (COIN-PRE-03).",
+          "action": "Adicionar ronda noturna complementar nos hotspots -22.904,-43.187 e -22.9055,-43.192 durante 20h–23h Sáb/Seg/Dom.",
+          "justification": "COIN-PRE-03 (risco 91) e COIN-PRE-05 (risco 83) com lacuna explícita de cobertura na janela noturna.",
           "priority": "alta"
         },
         {
           "responsible": "Comlurb",
-          "action": "Resolver 13 ocorrências de 'Vegetação encobrindo iluminação pública'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Comlurb na área.",
+          "action": "Executar poda de vegetação que encobre iluminação pública nos cinco hotspots, priorizando -22.9065,-43.1945; -22.904,-43.187 e -22.9055,-43.192.",
+          "justification": "Comlurb acumula 16 fatores na área (13 de vegetação encobrindo iluminação + 3 obstruindo passeio); vegetação aparece em COIN-PRE-01, 03 e 05.",
+          "priority": "alta"
+        },
+        {
+          "responsible": "SMAS",
+          "action": "Acionar equipes de abordagem social noturna nos quatro hotspots com presença de pessoas em situação de rua, com foco na janela 20h–23h Sáb/Seg/Dom.",
+          "justification": "SMAS concentra 27 fatores na área (22 pessoas em situação de rua + 5 cenas de uso de drogas); fator presente em COIN-PRE-01, 02, 03 e 04.",
+          "priority": "alta"
+        },
+        {
+          "responsible": "SEOP",
+          "action": "Operação de ordenamento do comércio irregular no entorno de -22.903,-43.183, com fiscalização recorrente antes da janela crítica noturna.",
+          "justification": "SEOP soma 10 fatores na área (7 comércio irregular + 2 estacionamento + 1 veículo de grande porte); comércio irregular é fator direto da COIN-PRE-02.",
+          "priority": "alta"
+        },
+        {
+          "responsible": "Seconserva",
+          "action": "Alargar/desobstruir calçada em -22.9045,-43.1905 e inspecionar mobiliário urbano usado como esconderijo nos demais hotspots.",
+          "justification": "Seconserva tem 11 fatores na área (5 calçada estreita + 4 mobiliário-esconderijo + 2 mobiliário desviando pedestres); calçada estreita é fator direto da COIN-PRE-04.",
           "priority": "alta"
         },
         {
           "responsible": "RioLuz",
-          "action": "Resolver 2 ocorrências de 'Área mal iluminada com circulação de pedestres'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da RioLuz na área.",
+          "action": "Vistoriar e reforçar iluminação pública nos pontos de circulação dos cinco hotspots, coordenando com a poda da Comlurb.",
+          "justification": "RioLuz registra 2 fatores de área mal iluminada, somados à vegetação encobrindo iluminação citada em COIN-PRE-01, 03 e 05.",
           "priority": "baixa"
         },
         {
-          "responsible": "Seconserva",
-          "action": "Resolver 5 ocorrências de 'Calçada estreita forçando pedestres à pista'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Seconserva na área.",
-          "priority": "média"
-        },
-        {
-          "responsible": "SEOP",
-          "action": "Resolver 7 ocorrências de 'Comércio irregular obstruindo a visibilidade do passeio'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SEOP na área.",
-          "priority": "média"
-        },
-        {
-          "responsible": "SMAS",
-          "action": "Resolver 22 ocorrências de 'Pessoas em situação de rua'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SMAS na área.",
-          "priority": "alta"
-        },
-        {
           "responsible": "CET-Rio",
-          "action": "Resolver 11 ocorrências de 'Ponto de retenção do tráfego'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da CET-Rio na área.",
+          "action": "Revisar pontos de retenção do tráfego na área para mitigar paradas prolongadas que favorecem abordagens criminosas.",
+          "justification": "CET-Rio acumula 11 fatores de ponto de retenção do tráfego na área.",
           "priority": "alta"
         },
         {
           "responsible": "GM-Rio",
-          "action": "Resolver 3 ocorrências de 'Motocicletas trafegando no passeio'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da GM-Rio na área.",
+          "action": "Fiscalizar circulação de motocicletas no passeio nos corredores próximos aos hotspots, com foco em rotas de fuga.",
+          "justification": "GM-Rio tem 3 fatores de motocicletas trafegando no passeio registrados na área.",
           "priority": "baixa"
         }
       ]
@@ -2841,7 +2844,7 @@
       "bairro": "São Cristóvão / Santo Cristo",
       "center": [
         -22.906578767629124,
-        -43.20500311517877
+        -43.20500311517878
       ],
       "zoom": 16,
       "polygon": [
@@ -5361,46 +5364,47 @@
       "peakDays": "Sex, Qui, Sáb",
       "executiveSummary": [
         {
-          "q": "O horário de pico de roubos coincide com a cobertura atual da FM?",
-          "a": "O pico identificado é 20h – 23h, principalmente em Sex, Qui, Sáb. A QMD padrão termina às 18h em boa parte das áreas — a sobreposição com o pico precisa ser validada na reunião.",
+          "q": "O pico de criminalidade está coberto pela QMD atual da Força Municipal?",
+          "a": "Não. O pico concentra-se entre 20h e 23h (Sex, Qui, Sáb), enquanto a QMD padrão encerra às 18h. As 5 coincidências críticas (risco ≥80) apresentam lacuna explícita de janela noturna fora da QMD.",
           "sources": [
             "Ocorrências",
             "QMD FM"
           ]
         },
         {
-          "q": "Quais fatores urbanos se sobrepõem à mancha criminal?",
-          "a": "Foram identificados 47 fatores ativos no polígono. O mais frequente é 'Área mal iluminada com circulação de pedestres' (10 ocorrências). 5 hotspots apresentam coincidência crítica.",
+          "q": "Quais fatores urbanos se sobrepõem à mancha criminal e qual é o mais problemático?",
+          "a": "A área tem 47 fatores ativos em 13 tipos. O mais problemático é 'Área mal iluminada com circulação de pedestres' (10 ocorrências cadastradas), presente em 4 das 5 coincidências críticas — demanda ação da RioLuz. 'Ponto de retenção do tráfego' (9, CET-Rio/GM-Rio) e vegetação obstruindo visibilidade/iluminação (5+5, Comlurb) também se sobrepõem aos hotspots.",
           "sources": [
             "Ocorrências",
             "Fatores Urbanos"
           ]
         },
         {
-          "q": "A variação do mês indica intensificação ou queda?",
-          "a": "Foram 33 ocorrências no último mês, variação de +57% em relação ao mês anterior. Tendência de alta — sugere reforço operacional.",
+          "q": "Qual a tendência de ocorrências no mês e qual a recomendação operacional?",
+          "a": "Alta expressiva: 33 ocorrências em 30 dias, variação de +57% vs mês anterior. Recomenda-se estender a QMD da FM para cobrir a janela 20h–23h em Qui, Sex e Sáb, com foco nos 5 hotspots críticos identificados.",
           "sources": [
-            "Ocorrências"
+            "Ocorrências",
+            "QMD FM"
           ]
         },
         {
-          "q": "Há cobertura de câmeras nos hotspots identificados?",
-          "a": "310 câmeras instaladas no polígono. Cobertura adequada nos principais hotspots.",
+          "q": "Há cobertura de câmeras nos hotspots ou lacunas de monitoramento?",
+          "a": "A área conta com 310 câmeras instaladas e não há hotspot sem cobertura de câmera. A lacuna não é de sensoriamento, mas de presença ostensiva no período noturno e de mitigação dos fatores urbanos (iluminação e vegetação) que reduzem a eficácia da videomonitoração.",
           "sources": [
-            "Ocorrências",
-            "Câmeras"
+            "Câmeras",
+            "Fatores Urbanos"
           ]
         }
       ],
       "dynamics": {
-        "modusOperandi": "Padrão criminal heterogêneo — RELINTs locais sugerem alternância entre agentes a pé e em motocicleta, com adaptação ao fluxo de pedestres.",
-        "suspectProfile": "Predominância de indivíduos jovens (heurística sobre denúncias) atuando individualmente ou em dupla; uso recorrente de capacete e roupas neutras para dificultar a identificação.",
-        "escapeRoutes": "Rotas de fuga são detalhadas nos RELINTs específicos da área — 1 RELINT consultado. Padrões recorrentes: vias paralelas com pouca iluminação e acessos a transporte público.",
-        "receivingPoints": "Pontos de receptação reportados pelo Disque Denúncia tendem a se concentrar em comércio informal próximo aos hotspots — recomenda-se cruzamento com operações SEOP em curso.",
+        "modusOperandi": "Predominância de roubos e furtos a transeuntes em áreas de espera e acessos ao transporte público, concentrados entre 20h e 23h (picos em sex, qui e sáb). Relatos do Disque Denúncia indicam dois padrões: (1) duplas armadas com pistolas que se misturam aos passageiros no último ponto de ônibus para roubar quem aguarda linhas da Central/Leopoldina; (2) grupos de seis ou mais indivíduos armados com facas e eventualmente armas de fogo subtraindo celulares e bolsas a partir das 21h, na rua e dentro de ônibus. RELINTs reforçam atuação a pé, com apoio de motocicletas e bicicletas, aproveitando distração das vítimas em travessias, embarque/desembarque e passarelas. Nenhuma das 4 denúncias do período menciona explicitamente 'moto' ou 'a pé', mas o RELINT é autoritativo nesse aspecto e aponta predominância de atuação a pé com suporte de modais de duas rodas.",
+        "suspectProfile": "Perfil heterogêneo conforme denúncias: duplas armadas com pistolas (idade não informada) operando próximo ao último ponto de ônibus da Leopoldina; indivíduos aparentemente menores de idade praticando roubos a partir das 19h nas proximidades do nº 2655 (próximo a prédio da CEDAE); e grupos de seis ou mais indivíduos armados com facas, ocasionalmente armas de fogo, atuando após as 21h. RELINT não detalha demografia. Dados insuficientes para caracterização demográfica precisa (gênero, faixa etária consolidada, vínculo territorial); há indícios de coexistência de autores adultos armados com arma de fogo e adolescentes em ação oportunista.",
+        "escapeRoutes": "RELINT da Rodoviária Novo Rio cita expressamente como rotas de dispersão: saídas diretas para a Av. Francisco Bicalho, Av. Rodrigues Alves e corredor do VLT, além de vias adjacentes à Av. Francisco Bicalho utilizadas por motocicletas e bicicletas. Múltiplos acessos sem controle no entorno da Rodoviária viabilizam dispersão imediata. Para o Terminal Gentileza, o RELINT (trecho disponível) aponta pontos cegos de vigilância pela ausência de interligação física adequada entre modais, mas não nomeia ruas específicas de fuga — dados insuficientes nesse subtrecho.",
+        "receivingPoints": "Dados insuficientes. Nem os RELINTs fornecidos nem a amostra de denúncias do Disque Denúncia mencionam pontos concretos de receptação (lojas, feiras, comércio específico) associados aos celulares e bolsas subtraídos na área. Recomenda-se acionar Disque Denúncia e inteligência da FM para mapeamento dedicado de receptação.",
         "sources": {
           "relints": 1,
           "denuncias": 4,
-          "ocorrencias": 99
+          "ocorrencias": 33
         }
       },
       "coincidences": [
@@ -5453,57 +5457,57 @@
       "actionPlan": [
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 2 — -22.9035, -43.2105 na janela Pico em 20h – 23h, dias Sex, Qui, Sáb",
-          "justification": "8 ocorrências em 90 dias, concentradas em raio de 50m — janela noturna fora da QMD (COIN-ROD-02).",
+          "action": "Estender QMD com patrulhamento ostensivo noturno (20h–23h) às quintas, sextas e sábados nos hotspots COIN-ROD-02 (-22.9035,-43.2105) e COIN-ROD-04 (-22.9,-43.21)",
+          "justification": "COIN-ROD-02 e COIN-ROD-04 têm risco 99 com pico 20h-23h Qui/Sex/Sáb e lacuna de QMD na janela noturna; somam 13 ocorrências em 90 dias",
           "priority": "alta"
         },
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 4 — -22.9, -43.21 na janela Pico em 20h – 23h, dias Sex, Qui, Sáb",
-          "justification": "5 ocorrências em 90 dias, concentradas em raio de 50m — janela noturna fora da QMD (COIN-ROD-04).",
+          "action": "Posicionar equipe de cobertura adicional no eixo dos hotspots COIN-ROD-06, COIN-ROD-07 e COIN-ROD-08 (-22.909/-22.910, -43.204/-43.205) na janela 20h-23h",
+          "justification": "COIN-ROD-06 (risco 82), COIN-ROD-07 (risco 91) e COIN-ROD-08 (risco 88) compartilham mesma janela noturna fora da QMD e concentram 9 ocorrências em raio reduzido",
           "priority": "alta"
-        },
-        {
-          "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 6 — -22.9095, -43.2055 na janela Pico em 20h – 23h, dias Sex, Qui, Sáb",
-          "justification": "3 ocorrências em 90 dias, concentradas em raio de 50m — janela noturna fora da QMD (COIN-ROD-06).",
-          "priority": "média"
-        },
-        {
-          "responsible": "Comlurb",
-          "action": "Resolver 5 ocorrências de 'Vegetação obstruindo a visibilidade do passeio'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Comlurb na área.",
-          "priority": "média"
         },
         {
           "responsible": "RioLuz",
-          "action": "Resolver 10 ocorrências de 'Área mal iluminada com circulação de pedestres'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da RioLuz na área.",
+          "action": "Executar vistoria e reforço de iluminação pública nos 10 pontos cadastrados de iluminação deficiente, priorizando os hotspots COIN-ROD-04, 06, 07 e 08",
+          "justification": "10 fatores de área mal iluminada com circulação de pedestres registrados na área, presentes em 4 das 5 coincidências críticas",
+          "priority": "alta"
+        },
+        {
+          "responsible": "Comlurb",
+          "action": "Realizar poda da vegetação nos 10 pontos cadastrados (5 obstruindo visibilidade do passeio + 5 encobrindo iluminação), com foco nos hotspots COIN-ROD-07 e COIN-ROD-08",
+          "justification": "COIN-ROD-07 e COIN-ROD-08 combinam vegetação obstruindo visibilidade com baixa iluminação; órgão acumula 11 fatores na área",
+          "priority": "alta"
+        },
+        {
+          "responsible": "CET-Rio",
+          "action": "Revisar ciclos semafóricos e sinalização nos pontos de retenção do tráfego associados aos hotspots COIN-ROD-02 e COIN-ROD-04",
+          "justification": "9 fatores de ponto de retenção do tráfego cadastrados na área, presentes nas duas coincidências de risco 99",
           "priority": "alta"
         },
         {
           "responsible": "Seconserva",
-          "action": "Resolver 4 ocorrências de 'Mobiliário/estrutura servindo de esconderijo'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Seconserva na área.",
-          "priority": "média"
+          "action": "Mapear e remover/vedar mobiliário, tapumes e estruturas abandonadas que servem de esconderijo (6 pontos cadastrados)",
+          "justification": "Seconserva tem 6 fatores na área (4 mobiliário/estrutura + 1 tapume + 1 mobiliário abandonado), categoria com 4-7 fatores",
+          "priority": "media"
         },
         {
           "responsible": "SMAS",
-          "action": "Resolver 4 ocorrências de 'Pessoas em situação de rua'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SMAS na área.",
-          "priority": "média"
-        },
-        {
-          "responsible": "CET-Rio",
-          "action": "Resolver 9 ocorrências de 'Ponto de retenção do tráfego'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da CET-Rio na área.",
-          "priority": "alta"
+          "action": "Acionar abordagem social às pessoas em situação de rua e atuação sobre cena de uso de drogas no perímetro do hotspot COIN-ROD-06",
+          "justification": "COIN-ROD-06 (risco 82) lista pessoas em situação de rua como fator; SMAS soma 5 fatores na área (4 PSR + 1 cena de uso)",
+          "priority": "media"
         },
         {
           "responsible": "GM-Rio",
-          "action": "Resolver 4 ocorrências de 'Motocicletas trafegando no passeio'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da GM-Rio na área.",
-          "priority": "média"
+          "action": "Operação focada em coibir motocicletas trafegando no passeio nos eixos dos hotspots noturnos",
+          "justification": "4 fatores cadastrados de motocicletas no passeio na área",
+          "priority": "media"
+        },
+        {
+          "responsible": "SEOP",
+          "action": "Fiscalizar comércio irregular obstruindo a visibilidade do passeio no entorno dos hotspots",
+          "justification": "1 fator de comércio irregular cadastrado; impacto direto na visibilidade nos corredores das coincidências",
+          "priority": "baixa"
         }
       ]
     },
@@ -5514,8 +5518,8 @@
       "aisp": "AISP 2",
       "bairro": "Botafogo / Flamengo",
       "center": [
-        -22.941469654606266,
-        -43.17887409433698
+        -22.941469654606255,
+        -43.178874094337
       ],
       "zoom": 16,
       "polygon": [
@@ -7874,46 +7878,47 @@
       "peakDays": "Dom, Ter, Seg",
       "executiveSummary": [
         {
-          "q": "O horário de pico de roubos coincide com a cobertura atual da FM?",
-          "a": "O pico identificado é 02h – 05h, principalmente em Dom, Ter, Seg. A QMD padrão termina às 18h em boa parte das áreas — a sobreposição com o pico precisa ser validada na reunião.",
+          "q": "O pico de criminalidade está coberto pela QMD atual da Força Municipal?",
+          "a": "Não. O pico se concentra entre 02h e 05h (Dom, Ter, Seg), enquanto a QMD padrão termina às 18h. As 5 coincidências identificadas registram explicitamente 'pico fora da cobertura padrão', exigindo extensão de turno ou destacamento noturno específico.",
           "sources": [
             "Ocorrências",
             "QMD FM"
           ]
         },
         {
-          "q": "Quais fatores urbanos se sobrepõem à mancha criminal?",
-          "a": "Foram identificados 139 fatores ativos no polígono. O mais frequente é 'Área mal iluminada com circulação de pedestres' (37 ocorrências). 4 hotspots apresentam coincidência crítica.",
+          "q": "Quais fatores urbanos se sobrepõem à mancha criminal e qual é o mais problemático?",
+          "a": "Há 139 fatores ativos (15 tipos), com destaque para 'Área mal iluminada com circulação de pedestres' (37 registros), presente em 4 das 5 coincidências críticas — é o fator mais problemático e demanda ação da RioLuz. Também recorrem 'Pessoas em situação de rua' (24, SMAS) e 'Vegetação encobrindo iluminação' (21, Comlurb), esta última associada ao hotspot de risco 96 (COIN-PRA-03).",
           "sources": [
-            "Ocorrências",
-            "Fatores Urbanos"
-          ]
-        },
-        {
-          "q": "A variação do mês indica intensificação ou queda?",
-          "a": "Foram 27 ocorrências no último mês, variação de +23% em relação ao mês anterior. Tendência de alta — sugere reforço operacional.",
-          "sources": [
+            "Fatores Urbanos",
             "Ocorrências"
           ]
         },
         {
-          "q": "Há cobertura de câmeras nos hotspots identificados?",
-          "a": "150 câmeras instaladas no polígono. Cobertura adequada nos principais hotspots.",
+          "q": "Qual a tendência de ocorrências e qual recomendação operacional decorre?",
+          "a": "Tendência de alta: 27 ocorrências em 30 dias, variação de +23% vs mês anterior. Recomenda-se priorização imediata da área no CompStat semanal, com reforço noturno da FM na janela 02h–05h e acionamento da RioLuz/Comlurb para mitigar os fatores de iluminação.",
           "sources": [
             "Ocorrências",
-            "Câmeras"
+            "QMD FM"
+          ]
+        },
+        {
+          "q": "A cobertura de câmeras atende aos hotspots identificados?",
+          "a": "Sim. Há 150 câmeras instaladas e nenhum hotspot sem cobertura de câmera, segundo o payload. A lacuna operacional está no monitoramento ativo na janela 02h–05h, não na infraestrutura física de captação.",
+          "sources": [
+            "Câmeras",
+            "Ocorrências"
           ]
         }
       ],
       "dynamics": {
-        "modusOperandi": "Padrão criminal heterogêneo — RELINTs locais sugerem alternância entre agentes a pé e em motocicleta, com adaptação ao fluxo de pedestres.",
-        "suspectProfile": "Predominância de indivíduos jovens (heurística sobre denúncias) atuando individualmente ou em dupla; uso recorrente de capacete e roupas neutras para dificultar a identificação.",
-        "escapeRoutes": "Rotas de fuga são detalhadas nos RELINTs específicos da área — 1 RELINT consultado. Padrões recorrentes: vias paralelas com pouca iluminação e acessos a transporte público.",
-        "receivingPoints": "Pontos de receptação reportados pelo Disque Denúncia tendem a se concentrar em comércio informal próximo aos hotspots — recomenda-se cruzamento com operações SEOP em curso.",
+        "modusOperandi": "Predominam roubos e furtos contra transeuntes, com foco em subtração de aparelhos celulares. Conforme RELINT, suspeitos atuam a pé, em motocicletas e em bicicletas (estas operando na ciclofaixa da orla), aproveitando momentos de distração em áreas de espera, travessias, acessos ao transporte público e aglomerações do corredor noturno de bares e restaurantes da Marquês de Abrantes. Amostra de denúncias confirma o padrão: dupla abordando celulares em semáforo em frente ao Botafogo Praia Shopping (altura do nº 400) e indivíduos armados circulando em motos próximo à Rua Ipiranga. Pico quantitativo concentra-se entre 02h–05h (Dom/Ter/Seg), compatível com a dispersão de público do corredor noturno. Observação: das 4 denúncias do Disque Denúncia em 90 dias, nenhuma cita explicitamente 'moto' ou 'a pé' nos campos estruturados, mas o texto livre menciona motos — a contagem estruturada subestima o uso de motocicleta evidenciado em RELINT e relato.",
+        "suspectProfile": "Dados insuficientes para perfil demográfico consolidado (idade, cor, faixa etária). Há apenas uma descrição pontual de denúncia: dois indivíduos, um com camiseta azul, shorts preto e bolsa, em ação no semáforo do Botafogo Praia Shopping. RELINT menciona genericamente 'indivíduos atuando a pé, motocicletas e bicicletas' e denúncia adicional cita 'indivíduos não identificados armados em motos' próximo à Rua Ipiranga. Operacionalmente: atuação em dupla ou pequenos grupos, ao menos parte armada, mobilidade mista (pé/moto/bicicleta).",
+        "escapeRoutes": "RELINT cita explicitamente: (i) extensão da orla da Praia de Botafogo sem barreiras físicas, viabilizando fuga imediata em qualquer direção após o delito; (ii) ciclofaixa da orla utilizada por criminosos em bicicleta; (iii) integração da Rua Marquês de Abrantes com o metrô, favorecendo dispersão via transporte público. Não há, nos RELINTs fornecidos, menção a viadutos, comunidades específicas ou ruas transversais nominadas como rota de fuga além da Rua Ipiranga (citada apenas como local de ocorrência, não de fuga).",
+        "receivingPoints": "Dados insuficientes. Nenhum RELINT, denúncia ou registro fornecido menciona pontos concretos de receptação (comércios, feiras, endereços) vinculados à área Praia de Botafogo – Marquês de Abrantes.",
         "sources": {
           "relints": 1,
           "denuncias": 4,
-          "ocorrencias": 81
+          "ocorrencias": 27
         }
       },
       "coincidences": [
@@ -7966,62 +7971,62 @@
       "actionPlan": [
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 1 — -22.9475, -43.1825 na janela Pico em 02h – 05h, dias Dom, Ter, Seg",
-          "justification": "7 ocorrências em 90 dias, concentradas em raio de 50m — pico fora da cobertura padrão (COIN-PRA-01).",
+          "action": "Estender QMD do setor Praia de Botafogo/Marquês de Abrantes até 05h nos domingos, segundas e terças, com posto fixo em -22.9475,-43.1825",
+          "justification": "COIN-PRA-01 (risco 99): 7 ocorrências em raio de 50m com pico 02h-05h Dom/Ter/Seg, fora da cobertura padrão até 18h",
           "priority": "alta"
         },
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 2 — -22.938, -43.1825 na janela Pico em 02h – 05h, dias Dom, Ter, Seg",
-          "justification": "4 ocorrências em 90 dias, concentradas em raio de 50m — pico fora da cobertura padrão (COIN-PRA-02).",
-          "priority": "média"
-        },
-        {
-          "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 3 — -22.935, -43.1785 na janela Pico em 02h – 05h, dias Dom, Ter, Seg",
-          "justification": "4 ocorrências em 90 dias, concentradas em raio de 50m — pico fora da cobertura padrão (COIN-PRA-03).",
+          "action": "Criar patrulhamento motorizado itinerante cobrindo os hotspots -22.938,-43.1825 e -22.935,-43.1785 entre 02h e 05h em Dom/Ter/Seg",
+          "justification": "COIN-PRA-02 (risco 81) e COIN-PRA-03 (risco 96) compartilham mesma janela noturna fora da cobertura padrão",
           "priority": "alta"
         },
         {
-          "responsible": "Comlurb",
-          "action": "Resolver 21 ocorrências de 'Vegetação encobrindo iluminação pública'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Comlurb na área.",
+          "responsible": "FM",
+          "action": "Posicionar dupla a pé em -22.947,-43.1825 durante a madrugada de Dom/Ter/Seg, articulada com abordagem social",
+          "justification": "COIN-PRA-04 (risco 94) combina iluminação deficiente e presença de pessoas em situação de rua no mesmo ponto",
           "priority": "alta"
         },
         {
           "responsible": "RioLuz",
-          "action": "Resolver 37 ocorrências de 'Área mal iluminada com circulação de pedestres'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da RioLuz na área.",
+          "action": "Vistoriar e restaurar iluminação pública nos cinco hotspots (-22.9475/-43.1825; -22.938/-43.1825; -22.935/-43.1785; -22.947/-43.1825; -22.936/-43.181)",
+          "justification": "37 registros de área mal iluminada com circulação de pedestres e 9 de parada de veículos; fator presente em COIN-PRA-01, 02, 04 e 05",
+          "priority": "alta"
+        },
+        {
+          "responsible": "Comlurb",
+          "action": "Executar poda de vegetação que encobre luminárias e obstrui visibilidade do passeio, com prioridade ao entorno de -22.935,-43.1785",
+          "justification": "21 registros de vegetação encobrindo iluminação e 6 obstruindo passeio; fator central do COIN-PRA-03 (risco 96)",
+          "priority": "alta"
+        },
+        {
+          "responsible": "SMAS",
+          "action": "Realizar abordagem social noturna recorrente no entorno de -22.947,-43.1825 com encaminhamento para acolhimento",
+          "justification": "24 registros de pessoas em situação de rua na área e fator presente no COIN-PRA-04 (risco 94)",
           "priority": "alta"
         },
         {
           "responsible": "Seconserva",
-          "action": "Resolver 8 ocorrências de 'Vãos ou cavidades usados como esconderijo'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Seconserva na área.",
+          "action": "Vedar/remover vãos, cavidades e mobiliário abandonado usados como esconderijo no perímetro da Praia de Botafogo/Marquês de Abrantes",
+          "justification": "8 registros de vãos/cavidades, 4 de calçada estreita e 2 de mobiliário abandonado (14 fatores acumulados)",
           "priority": "alta"
         },
         {
           "responsible": "SEOP",
-          "action": "Resolver 6 ocorrências de 'Comércio irregular obstruindo a visibilidade do passeio'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SEOP na área.",
-          "priority": "média"
-        },
-        {
-          "responsible": "SMAS",
-          "action": "Resolver 24 ocorrências de 'Pessoas em situação de rua'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SMAS na área.",
+          "action": "Fiscalizar comércio irregular e estacionamento irregular que obstruem passeio e visibilidade na área",
+          "justification": "6 registros de comércio irregular, 3 de estacionamento irregular e 1 de veículo de grande porte (10 fatores)",
           "priority": "alta"
         },
         {
           "responsible": "CET-Rio",
-          "action": "Resolver 13 ocorrências de 'Ponto de retenção do tráfego'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da CET-Rio na área.",
+          "action": "Revisar sinalização e fluxo nos pontos de retenção de tráfego identificados na área",
+          "justification": "13 registros de ponto de retenção do tráfego cadastrados",
           "priority": "alta"
         },
         {
           "responsible": "GM-Rio",
-          "action": "Resolver 3 ocorrências de 'Motocicletas trafegando no passeio'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da GM-Rio na área.",
+          "action": "Operação focada de coibição de motocicletas trafegando no passeio na Marquês de Abrantes",
+          "justification": "3 registros de motocicletas no passeio cadastrados na área",
           "priority": "baixa"
         }
       ]
@@ -8033,8 +8038,8 @@
       "aisp": "AISP 6",
       "bairro": "Tijuca / Maracanã",
       "center": [
-        -22.91864688579635,
-        -43.219148772146184
+        -22.91864688579634,
+        -43.219148772146205
       ],
       "zoom": 16,
       "polygon": [
@@ -9521,46 +9526,47 @@
       "peakDays": "Qui, Dom, Seg",
       "executiveSummary": [
         {
-          "q": "O horário de pico de roubos coincide com a cobertura atual da FM?",
-          "a": "O pico identificado é 20h – 23h, principalmente em Qui, Dom, Seg. A QMD padrão termina às 18h em boa parte das áreas — a sobreposição com o pico precisa ser validada na reunião.",
+          "q": "O pico de criminalidade está coberto pela QMD atual da Força Municipal?",
+          "a": "Não. O pico concentra-se entre 20h e 23h (Qui, Dom, Seg), enquanto a QMD padrão da FM termina às 18h. Todas as 5 coincidências identificadas apontam lacuna de janela noturna fora da QMD.",
           "sources": [
             "Ocorrências",
             "QMD FM"
           ]
         },
         {
-          "q": "Quais fatores urbanos se sobrepõem à mancha criminal?",
-          "a": "Foram identificados 68 fatores ativos no polígono. O mais frequente é 'Vegetação encobrindo iluminação pública' (16 ocorrências). 2 hotspots apresentam coincidência crítica.",
+          "q": "Quais fatores urbanos se sobrepõem à mancha criminal e qual é o mais problemático?",
+          "a": "Há 68 fatores ativos (19 tipos), com destaque para vegetação encobrindo iluminação pública (16) e vegetação obstruindo visibilidade do passeio (5), presentes em 4 das 5 coincidências críticas. A vegetação (responsabilidade da Comlurb) é o fator mais problemático, seguida por pessoas em situação de rua (6, SMAS), presente nos hotspots de maior risco (COIN-SFX-02 e 04, risco 85).",
           "sources": [
             "Ocorrências",
             "Fatores Urbanos"
           ]
         },
         {
-          "q": "A variação do mês indica intensificação ou queda?",
-          "a": "Foram 21 ocorrências no último mês, variação de +11% em relação ao mês anterior. Tendência de alta — sugere reforço operacional.",
+          "q": "Qual a tendência de ocorrências no período e qual recomendação operacional?",
+          "a": "Tendência de alta: 21 ocorrências em 30 dias, variação de +11% vs mês anterior. Recomenda-se reforço da FM na janela 20h–23h às quintas, domingos e segundas, com foco nos hotspots de risco ≥80 (COIN-SFX-02 e COIN-SFX-04).",
           "sources": [
-            "Ocorrências"
+            "Ocorrências",
+            "QMD FM"
           ]
         },
         {
-          "q": "Há cobertura de câmeras nos hotspots identificados?",
-          "a": "60 câmeras instaladas no polígono. Alguns hotspots permanecem sem cobertura — ver Painel de Coincidências para detalhes.",
+          "q": "A cobertura de câmeras atende aos hotspots identificados?",
+          "a": "Parcialmente. A área conta com 60 câmeras instaladas, mas há hotspots sem cobertura: COIN-SFX-04 (risco 85) e COIN-SFX-05 (risco 74) estão sem câmera de monitoramento. Prioridade de instalação no COIN-SFX-04, por combinar risco máximo e ausência de cobertura.",
           "sources": [
-            "Ocorrências",
-            "Câmeras"
+            "Câmeras",
+            "Ocorrências"
           ]
         }
       ],
       "dynamics": {
-        "modusOperandi": "Padrão criminal heterogêneo — RELINTs locais sugerem alternância entre agentes a pé e em motocicleta, com adaptação ao fluxo de pedestres.",
-        "suspectProfile": "Predominância de indivíduos jovens (heurística sobre denúncias) atuando individualmente ou em dupla; uso recorrente de capacete e roupas neutras para dificultar a identificação.",
-        "escapeRoutes": "Rotas de fuga são detalhadas nos RELINTs específicos da área — 1 RELINT consultado. Padrões recorrentes: vias paralelas com pouca iluminação e acessos a transporte público.",
-        "receivingPoints": "Pontos de receptação reportados pelo Disque Denúncia tendem a se concentrar em comércio informal próximo aos hotspots — recomenda-se cruzamento com operações SEOP em curso.",
+        "modusOperandi": "Predominância de furtos e roubos oportunistas contra transeuntes, com foco em subtração de celulares, tablets e notebooks. RELINTs indicam atuação majoritariamente a pé, com apoio de motocicletas e bicicletas, aproveitando momentos de distração das vítimas em áreas de retenção de fluxo: catracas, escadas, travessias e pontos de ônibus das duas estações. Na Estação São Francisco Xavier há concentração nos horários de pico escolar (entrada/saída), com alvo no perfil estudantil. Na Estação Afonso Pena registram-se abordagens agressivas a pedestres e comerciantes no entorno da praça, associadas à presença de PSR e uso de entorpecentes. Amostra do Disque Denúncia corrobora dois padrões adicionais: (i) assaltos a transeuntes em frente ao Corpo de Bombeiros na avenida principal e (ii) ação coordenada de cerca de quatro indivíduos abordando ocupantes de veículos parados no sinal antes do viaduto próximo à Expo Mag. Pico quantitativo entre 20h e 23h, com maior incidência em quinta, domingo e segunda, sugerindo deslocamento da janela de risco para o período noturno, fora da cobertura padrão da QMD (até 18h). Volume de denúncias formais é baixo (2 em 90d), portanto a caracterização qualitativa apoia-se prioritariamente nos RELINTs.",
+        "suspectProfile": "Dados insuficientes para caracterização demográfica (idade, vestimenta, etnia) dos autores. Operacionalmente, os RELINTs indicam atuação de indivíduos a pé, motociclistas e ciclistas, em ações individuais oportunistas nos acessos às estações. A amostra do Disque Denúncia menciona um grupo de aproximadamente quatro indivíduos não identificados atuando contra veículos parados no sinal antes do viaduto próximo à Expo Mag, indicando coexistência de atuação solo (furto oportunista de celular em estação) e em grupo (roubo a veículos em retenção de tráfego). No entorno da praça da Estação Afonso Pena há sobreposição com população em situação de rua e usuários de entorpecentes praticando abordagens agressivas, sem que os RELINTs estabeleçam vínculo autoral direto com os roubos a transeuntes.",
+        "escapeRoutes": "RELINTs mencionam explicitamente: (i) múltiplas saídas para a Rua São Francisco Xavier e vias adjacentes a partir da Estação São Francisco Xavier; (ii) uso de calçadas adjacentes pelas motocicletas como rota de fuga (corroborado pelo fator urbano 'motocicletas trafegando no passeio', 7 ocorrências). A denúncia cita ainda atuação antes da subida do viaduto próximo à Expo Mag, indicando o viaduto como possível eixo de dispersão veicular. Não há, nos dados fornecidos, identificação nominal de outras vias específicas de fuga além das citadas.",
+        "receivingPoints": "Dados insuficientes. Nenhum RELINT, denúncia ou registro de ocorrência fornecido menciona pontos concretos de receptação de aparelhos celulares ou outros bens subtraídos na área das Estações São Francisco Xavier e Afonso Pena. Recomenda-se cruzamento com inteligência externa (DRFC/operações de receptação) em ciclo posterior.",
         "sources": {
           "relints": 1,
           "denuncias": 2,
-          "ocorrencias": 63
+          "ocorrencias": 21
         }
       },
       "coincidences": [
@@ -9613,62 +9619,56 @@
       "actionPlan": [
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 2 — -22.919, -43.224 na janela Pico em 20h – 23h, dias Qui, Dom, Seg",
-          "justification": "3 ocorrências em 90 dias, concentradas em raio de 50m — janela noturna fora da QMD (COIN-SFX-02).",
+          "action": "Implantar patrulhamento ostensivo noturno (20h-23h) nas Qui, Dom e Seg cobrindo os hotspots COIN-SFX-02 (-22.919,-43.224) e COIN-SFX-04 (-22.9185,-43.224), com ajuste extraordinário da QMD para cobertura fora do padrão até 18h.",
+          "justification": "COIN-SFX-02 e COIN-SFX-04 apresentam risco 85 com lacuna explícita de janela noturna fora da QMD e pico concentrado em 20h-23h nos mesmos dias da semana.",
           "priority": "alta"
         },
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 3 — -22.916, -43.2185 na janela Pico em 20h – 23h, dias Qui, Dom, Seg",
-          "justification": "3 ocorrências em 90 dias, concentradas em raio de 50m — janela noturna fora da QMD (COIN-SFX-03).",
-          "priority": "média"
-        },
-        {
-          "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 4 — -22.9185, -43.224 na janela Pico em 20h – 23h, dias Qui, Dom, Seg",
-          "justification": "3 ocorrências em 90 dias, concentradas em raio de 50m — Hotspot sem câmera de monitoramento; janela noturna fora da QMD (COIN-SFX-04).",
+          "action": "Estabelecer ponto-base móvel noturno (20h-23h, Qui/Dom/Seg) cobrindo o eixo dos hotspots COIN-SFX-03, COIN-SFX-05 e COIN-SFX-06, com prioridade aos pontos sem câmera de monitoramento.",
+          "justification": "COIN-SFX-05 e COIN-SFX-06 (risco 74 e 77) e COIN-SFX-03 (risco 73) compartilham mesma janela horária e dias, e COIN-SFX-04/05 têm lacuna de câmera, exigindo presença física compensatória.",
           "priority": "alta"
         },
         {
           "responsible": "Comlurb",
-          "action": "Resolver 16 ocorrências de 'Vegetação encobrindo iluminação pública'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Comlurb na área.",
+          "action": "Executar poda de vegetação e remoção de lixo/entulho nos hotspots COIN-SFX-02, COIN-SFX-04, COIN-SFX-05 e COIN-SFX-06, priorizando trechos onde a vegetação encobre iluminação pública.",
+          "justification": "Comlurb concentra 24 fatores na área (16 de vegetação encobrindo iluminação, 5 de vegetação obstruindo passeio e 3 de lixo/entulho), todos presentes nos hotspots de alto risco.",
+          "priority": "alta"
+        },
+        {
+          "responsible": "GM-Rio",
+          "action": "Operação de fiscalização de motocicletas trafegando no passeio no entorno de COIN-SFX-03 (-22.916,-43.2185) na janela 20h-23h, Qui/Dom/Seg.",
+          "justification": "COIN-SFX-03 (risco 73) tem como fator específico motocicletas no passeio, e a área registra 7 fatores deste tipo.",
+          "priority": "media"
+        },
+        {
+          "responsible": "SMAS",
+          "action": "Realizar abordagem social noturna de pessoas em situação de rua nos hotspots COIN-SFX-02 e COIN-SFX-04, com oferta de acolhimento.",
+          "justification": "SMAS responde por 6 fatores de pessoas em situação de rua, fator presente em COIN-SFX-02 e COIN-SFX-04 (ambos risco 85).",
+          "priority": "media"
+        },
+        {
+          "responsible": "Seconserva",
+          "action": "Vistoriar e selar vãos/cavidades usados como esconderijo e avaliar alargamento de calçadas estreitas no perímetro das Estações São Francisco Xavier - Afonso Pena.",
+          "justification": "Seconserva acumula 10 fatores na área: 6 de calçada estreita forçando pedestres à pista, 3 de vãos usados como esconderijo e 1 de mobiliário desviando pedestres.",
           "priority": "alta"
         },
         {
           "responsible": "RioLuz",
-          "action": "Resolver 4 ocorrências de 'Área mal iluminada com circulação de pedestres'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da RioLuz na área.",
-          "priority": "média"
-        },
-        {
-          "responsible": "Seconserva",
-          "action": "Resolver 6 ocorrências de 'Calçada estreita forçando pedestres à pista'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Seconserva na área.",
-          "priority": "média"
+          "action": "Reforçar iluminação pública nos trechos de circulação de pedestres e parada de veículos da área, em coordenação com a poda da Comlurb em COIN-SFX-06.",
+          "justification": "RioLuz registra 5 fatores na área (4 de área mal iluminada com circulação de pedestres + 1 com parada de veículos), e COIN-SFX-06 tem vegetação encobrindo a iluminação pública como fator direto.",
+          "priority": "media"
         },
         {
           "responsible": "SEOP",
-          "action": "Resolver 4 ocorrências de 'Veículos de grande porte obstruindo a visibilidade'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SEOP na área.",
-          "priority": "média"
-        },
-        {
-          "responsible": "SMAS",
-          "action": "Resolver 6 ocorrências de 'Pessoas em situação de rua'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SMAS na área.",
-          "priority": "média"
-        },
-        {
-          "responsible": "GM-Rio",
-          "action": "Resolver 7 ocorrências de 'Motocicletas trafegando no passeio'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da GM-Rio na área.",
-          "priority": "média"
+          "action": "Operação de fiscalização contra veículos de grande porte, comércio irregular e estacionamento irregular obstruindo passeio no perímetro das estações.",
+          "justification": "SEOP soma 8 fatores na área (4 veículos de grande porte, 2 comércio irregular, 2 estacionamento irregular), todos impactando visibilidade no entorno dos hotspots.",
+          "priority": "alta"
         },
         {
           "responsible": "SMTR",
-          "action": "Resolver 3 ocorrências de 'Ponto de ônibus com histórico de vandalismo'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SMTR na área.",
+          "action": "Vistoria e recuperação dos pontos de ônibus com histórico de vandalismo no perímetro das Estações São Francisco Xavier - Afonso Pena.",
+          "justification": "SMTR tem 3 fatores cadastrados de pontos de ônibus com histórico de vandalismo na área.",
           "priority": "baixa"
         }
       ]
@@ -9681,7 +9681,7 @@
       "bairro": "Botafogo",
       "center": [
         -22.95187446048106,
-        -43.18853168331417
+        -43.188531683314174
       ],
       "zoom": 16,
       "polygon": [
@@ -11866,46 +11866,46 @@
       "peakDays": "Dom, Seg, Sáb",
       "executiveSummary": [
         {
-          "q": "O horário de pico de roubos coincide com a cobertura atual da FM?",
-          "a": "O pico identificado é 19h – 22h, principalmente em Dom, Seg, Sáb. A QMD padrão termina às 18h em boa parte das áreas — a sobreposição com o pico precisa ser validada na reunião.",
+          "q": "O pico de criminalidade está sobreposto à QMD atual da Força Municipal?",
+          "a": "Não. O pico se concentra entre 19h e 22h (Dom, Seg, Sáb), enquanto a QMD padrão da FM termina às 18h. As 5 coincidências críticas registram explicitamente 'janela noturna fora da QMD', indicando lacuna integral de cobertura ostensiva no horário de maior risco.",
           "sources": [
             "Ocorrências",
             "QMD FM"
           ]
         },
         {
-          "q": "Quais fatores urbanos se sobrepõem à mancha criminal?",
-          "a": "Foram identificados 167 fatores ativos no polígono. O mais frequente é 'Vegetação encobrindo iluminação pública' (48 ocorrências). 5 hotspots apresentam coincidência crítica.",
+          "q": "Quais fatores urbanos se sobrepõem à mancha criminal e qual é o mais problemático?",
+          "a": "Há 167 fatores ativos (19 tipos), com destaque para vegetação encobrindo iluminação pública (48), pessoas em situação de rua (24), área mal iluminada com circulação de pedestres (21) e vegetação obstruindo visibilidade (19). O mais problemático é a vegetação encobrindo iluminação (Comlurb/RioLuz), presente em 2 das 5 coincidências críticas e potencializando o fator iluminação deficiente, recorrente em 3 hotspots.",
           "sources": [
-            "Ocorrências",
-            "Fatores Urbanos"
+            "Fatores Urbanos",
+            "Ocorrências"
           ]
         },
         {
-          "q": "A variação do mês indica intensificação ou queda?",
-          "a": "Foram 12 ocorrências no último mês, variação de -60% em relação ao mês anterior. Tendência de queda — monitorar deslocamento para áreas adjacentes.",
+          "q": "Qual a tendência de ocorrências no mês e qual a recomendação operacional?",
+          "a": "Tendência de queda acentuada: 12 ocorrências em 30 dias, variação de -60% vs. mês anterior. Recomenda-se manter o patamar atual de esforço, porém redirecionar para a janela 19h–22h nos hotspots [COIN-MET-01] a [COIN-MET-05], evitando reversão do ganho enquanto se atacam os fatores urbanos persistentes.",
           "sources": [
             "Ocorrências"
           ]
         },
         {
-          "q": "Há cobertura de câmeras nos hotspots identificados?",
-          "a": "80 câmeras instaladas no polígono. Alguns hotspots permanecem sem cobertura — ver Painel de Coincidências para detalhes.",
+          "q": "Qual a cobertura de câmeras nos hotspots e onde estão as lacunas?",
+          "a": "A área conta com 80 câmeras instaladas, mas há hotspot sem cobertura: [COIN-MET-01] (-22.953, -43.189; risco 99; 4 ocorrências/90d) está explicitamente sem câmera de monitoramento. Os demais hotspots ([COIN-MET-02] a [COIN-MET-05]) não registram lacuna de câmera, apenas de QMD noturna.",
           "sources": [
-            "Ocorrências",
-            "Câmeras"
+            "Câmeras",
+            "Ocorrências"
           ]
         }
       ],
       "dynamics": {
-        "modusOperandi": "Padrão criminal heterogêneo — RELINTs locais sugerem alternância entre agentes a pé e em motocicleta, com adaptação ao fluxo de pedestres.",
-        "suspectProfile": "Predominância de indivíduos jovens (heurística sobre denúncias) atuando individualmente ou em dupla; uso recorrente de capacete e roupas neutras para dificultar a identificação.",
-        "escapeRoutes": "Rotas de fuga são detalhadas nos RELINTs específicos da área — 2 RELINTs consultados. Padrões recorrentes: vias paralelas com pouca iluminação e acessos a transporte público.",
-        "receivingPoints": "Pontos de receptação reportados pelo Disque Denúncia tendem a se concentrar em comércio informal próximo aos hotspots — recomenda-se cruzamento com operações SEOP em curso.",
+        "modusOperandi": "Predominância de furtos e roubos contra transeuntes, com foco em subtração de aparelhos celulares, conforme RELINT RI_011_2026. Autores atuam a pé, em motocicletas e bicicletas, aproveitando momentos de distração das vítimas em áreas de espera, travessias e acessos ao Metrô Botafogo. Furtos rápidos ocorrem nas catracas e escadas durante o pagamento de tarifa ou uso de celular pelos passageiros. Pico quantitativo observado entre 19h–22h (Dom, Seg, Sáb), parcialmente sobreposto à janela de saída do trabalho (17h–20h) descrita no RELINT. As 3 denúncias do Disque Denúncia no período não mencionam 'moto' nem 'a pé' — referem-se a ponto de venda de drogas em bar 24h sem alvará na esquina com São Clemente (com máquinas caça-níqueis nos fundos), concentração de pessoas em situação de rua e dependentes químicos consumindo drogas em frente ao nº 101 no período noturno, e invasão de prédio de antigo home care próximo ao prédio da NET por usuários de drogas. Dados insuficientes para distinguir atuação individual vs. em grupo.",
+        "suspectProfile": "RELINT RI_011_2026 caracteriza os autores apenas como indivíduos a pé, motociclistas e ciclistas, sem detalhamento demográfico. Denúncias do Disque Denúncia mencionam pessoas em situação de rua e dependentes químicos não identificados associados a baderna e consumo de drogas no entorno da São Clemente nº 101, mas não há vínculo direto estabelecido entre esse grupo e a autoria dos furtos/roubos de celular descritos no RELINT. Dados insuficientes para perfil demográfico (idade, gênero, vestimenta) ou para confirmar reincidência/organização.",
+        "escapeRoutes": "RELINT RI_011_2026 indica como rotas de dispersão: múltiplas saídas do Metrô Botafogo e pontos de ônibus adjacentes, além de uso de calçadas por motociclistas como rota de fuga. RELINT complementar RI_014_2026 (Rio Sul) menciona acesso ao Túnel Alaor Prata e conexão com Botafogo como rota de dispersão na área vizinha de Lauro Müller. O trecho do RELINT referente à Rua São Clemente está truncado no payload, não permitindo identificar rotas específicas adicionais nessa via.",
+        "receivingPoints": "Nenhum RELINT ou denúncia do payload menciona explicitamente ponto de receptação de celulares ou de produtos de furto/roubo na área. Há registro, em denúncia, de bar 24h sem alvará na esquina da São Clemente (Boteco citado ao lado da Amoedo) com máquinas caça-níqueis nos fundos e ponto de venda de drogas no andar superior, mas o relato não caracteriza esse local como receptador. Dados insuficientes para apontar pontos de receptação.",
         "sources": {
           "relints": 2,
           "denuncias": 3,
-          "ocorrencias": 36
+          "ocorrencias": 12
         }
       },
       "coincidences": [
@@ -11958,63 +11958,63 @@
       "actionPlan": [
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 1 — -22.953, -43.189 na janela Pico em 19h – 22h, dias Dom, Seg, Sáb",
-          "justification": "4 ocorrências em 90 dias, concentradas em raio de 50m — Hotspot sem câmera de monitoramento; janela noturna fora da QMD (COIN-MET-01).",
+          "action": "Estender QMD com patrulhamento ostensivo noturno (19h-22h) nos domingos, segundas e sábados, cobrindo os hotspots COIN-MET-01, COIN-MET-02, COIN-MET-04 e COIN-MET-05",
+          "justification": "Quatro hotspots de risco ≥97 (COIN-MET-01, 02, 04, 05) compartilham janela noturna 19h-22h em Dom/Seg/Sáb e estão fora da QMD atual",
           "priority": "alta"
         },
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 2 — -22.9545, -43.193 na janela Pico em 19h – 22h, dias Dom, Seg, Sáb",
-          "justification": "3 ocorrências em 90 dias, concentradas em raio de 50m — janela noturna fora da QMD (COIN-MET-02).",
+          "action": "Posicionar equipe fixa nas coordenadas -22.953,-43.189 entre 19h e 22h e solicitar instalação de câmera de monitoramento no ponto",
+          "justification": "COIN-MET-01 (risco 99) acumula 4 ocorrências em 90 dias em raio de 50m e apresenta lacuna explícita de cobertura por câmera",
           "priority": "alta"
         },
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 3 — -22.9495, -43.185 na janela Pico em 19h – 22h, dias Dom, Seg, Sáb",
-          "justification": "3 ocorrências em 90 dias, concentradas em raio de 50m — janela noturna fora da QMD (COIN-MET-03).",
+          "action": "Incluir hotspot COIN-MET-03 (-22.9495,-43.185) na rota de patrulhamento noturno reforçado 19h-22h",
+          "justification": "COIN-MET-03 tem risco 91 com 3 ocorrências em 90 dias e janela noturna fora da QMD",
           "priority": "alta"
         },
         {
           "responsible": "Comlurb",
-          "action": "Resolver 48 ocorrências de 'Vegetação encobrindo iluminação pública'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Comlurb na área.",
+          "action": "Executar poda da vegetação que encobre iluminação e obstrui visibilidade do passeio, priorizando entornos dos hotspots COIN-MET-02, COIN-MET-04 e COIN-MET-05",
+          "justification": "71 fatores Comlurb registrados na área (48 de vegetação encobrindo iluminação + 19 obstruindo passeio + 4 lixo/entulho); vegetação aparece como fator em 3 das 5 coincidências críticas",
           "priority": "alta"
         },
         {
           "responsible": "RioLuz",
-          "action": "Resolver 21 ocorrências de 'Área mal iluminada com circulação de pedestres'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da RioLuz na área.",
+          "action": "Recuperar iluminação pública nos trechos de circulação de pedestres dos hotspots COIN-MET-01, COIN-MET-03 e COIN-MET-05",
+          "justification": "24 fatores RioLuz na área (21 de área mal iluminada com circulação de pedestres + 3 de parada de veículos); iluminação deficiente compõe 4 das 5 coincidências críticas",
+          "priority": "alta"
+        },
+        {
+          "responsible": "SMAS",
+          "action": "Realizar abordagem social noturna nos hotspots COIN-MET-01, COIN-MET-03 e COIN-MET-04 dentro da janela 19h-22h",
+          "justification": "30 fatores SMAS na área (24 pessoas em situação de rua + 6 cenas de uso de drogas); presença de pessoas em situação de rua compõe 3 das 5 coincidências críticas",
           "priority": "alta"
         },
         {
           "responsible": "Seconserva",
-          "action": "Resolver 5 ocorrências de 'Mobiliário/estrutura servindo de esconderijo'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Seconserva na área.",
-          "priority": "média"
+          "action": "Remover/lacrar mobiliário e estruturas que servem de esconderijo no entorno do hotspot COIN-MET-02 e revisar largura do passeio",
+          "justification": "11 fatores Seconserva na área (5 mobiliário servindo de esconderijo + 4 calçada estreita + 2 mobiliário abandonado); mobiliário-esconderijo é fator direto de COIN-MET-02",
+          "priority": "media"
         },
         {
           "responsible": "SEOP",
-          "action": "Resolver 6 ocorrências de 'Estacionamento irregular forçando pedestres à pista'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SEOP na área.",
-          "priority": "média"
-        },
-        {
-          "responsible": "SMAS",
-          "action": "Resolver 24 ocorrências de 'Pessoas em situação de rua'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SMAS na área.",
+          "action": "Fiscalizar estacionamento irregular e comércio irregular no eixo São Clemente / Voluntários da Pátria",
+          "justification": "10 fatores SEOP na área (6 estacionamento irregular + 3 comércio irregular + 1 veículo de grande porte) forçando pedestres à pista e reduzindo visibilidade",
           "priority": "alta"
         },
         {
           "responsible": "CET-Rio",
-          "action": "Resolver 12 ocorrências de 'Ponto de retenção do tráfego'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da CET-Rio na área.",
+          "action": "Revisar pontos de retenção do tráfego no eixo da área para evitar imobilização de veículos durante a janela 19h-22h",
+          "justification": "12 fatores CET-Rio de retenção do tráfego registrados na área, agravando exposição na janela noturna das coincidências",
           "priority": "alta"
         },
         {
           "responsible": "GM-Rio",
-          "action": "Resolver 4 ocorrências de 'Motocicletas trafegando no passeio'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da GM-Rio na área.",
-          "priority": "média"
+          "action": "Operação de fiscalização contra motocicletas trafegando no passeio na área",
+          "justification": "4 fatores GM-Rio de motocicletas no passeio registrados, aumentando risco a pedestres no entorno dos hotspots",
+          "priority": "media"
         }
       ]
     },
@@ -12672,73 +12672,97 @@
       "peakDays": "Sáb, Dom, Seg",
       "executiveSummary": [
         {
-          "q": "O horário de pico de roubos coincide com a cobertura atual da FM?",
-          "a": "O pico identificado é 00h – 03h, principalmente em Sáb, Dom, Seg. A QMD padrão termina às 18h em boa parte das áreas — a sobreposição com o pico precisa ser validada na reunião.",
+          "q": "O pico de criminalidade está coberto pela QMD atual da Força Municipal?",
+          "a": "Não. O pico concentra-se entre 00h e 03h, principalmente aos sábados, domingos e segundas, enquanto a QMD padrão da FM encerra às 18h. Há lacuna integral de cobertura ostensiva no horário crítico.",
           "sources": [
             "Ocorrências",
             "QMD FM"
           ]
         },
         {
-          "q": "Quais fatores urbanos se sobrepõem à mancha criminal?",
-          "a": "Foram identificados 28 fatores ativos no polígono. O mais frequente é 'Motocicletas trafegando no passeio' (13 ocorrências). 0 hotspots apresentam coincidência crítica.",
+          "q": "Quais fatores urbanos se sobrepõem à mancha criminal e qual é o mais problemático?",
+          "a": "A área tem 28 fatores ativos em 7 tipos. O mais problemático são motocicletas trafegando no passeio (13 registros), seguido de comércio irregular obstruindo a visibilidade (5) e veículos de grande porte obstruindo visibilidade (3) — todos atribuíveis à SEOP/GM-Rio, com 3 registros de pessoas em situação de rua (SMAS).",
+          "sources": [
+            "Fatores Urbanos"
+          ]
+        },
+        {
+          "q": "Qual a tendência de ocorrências no período e qual a recomendação operacional?",
+          "a": "Tendência estável: 8 ocorrências em 30 dias, variação de +0% vs mês anterior. Recomenda-se manter o monitoramento e priorizar atuação da GM-Rio/SEOP sobre motocicletas no passeio e comércio irregular, sem necessidade de reforço emergencial de efetivo.",
           "sources": [
             "Ocorrências",
             "Fatores Urbanos"
           ]
         },
         {
-          "q": "A variação do mês indica intensificação ou queda?",
-          "a": "Foram 8 ocorrências no último mês, variação de +0% em relação ao mês anterior. Estabilidade — manter QMD com ajustes pontuais.",
+          "q": "Há cobertura adequada de câmeras nos hotspots da área?",
+          "a": "Sim. A área conta com 30 câmeras instaladas e não há hotspot sem cobertura identificado. Não foram apontadas lacunas de videomonitoramento.",
           "sources": [
+            "Câmeras",
             "Ocorrências"
-          ]
-        },
-        {
-          "q": "Há cobertura de câmeras nos hotspots identificados?",
-          "a": "30 câmeras instaladas no polígono. Cobertura adequada nos principais hotspots.",
-          "sources": [
-            "Ocorrências",
-            "Câmeras"
           ]
         }
       ],
       "dynamics": {
-        "modusOperandi": "Padrão criminal heterogêneo — RELINTs locais sugerem alternância entre agentes a pé e em motocicleta, com adaptação ao fluxo de pedestres.",
-        "suspectProfile": "Predominância de indivíduos jovens (heurística sobre denúncias) atuando individualmente ou em dupla; uso recorrente de capacete e roupas neutras para dificultar a identificação.",
-        "escapeRoutes": "Rotas de fuga são detalhadas nos RELINTs específicos da área — 0 RELINTs consultados. Padrões recorrentes: vias paralelas com pouca iluminação e acessos a transporte público.",
-        "receivingPoints": "Pontos de receptação reportados pelo Disque Denúncia tendem a se concentrar em comércio informal próximo aos hotspots — recomenda-se cruzamento com operações SEOP em curso.",
+        "modusOperandi": "Amostra limitada: 2 denúncias no período de 90 dias e sem RELINTs da FM para esta área. Um dos relatos descreve grupo de cerca de três assaltantes armados com armas curtas posicionados na Av. [mencionada] esquina com Rua Barão de Capanema, próximo ao viaduto de Bangu, escondidos atrás de outdoor no muro da [via] férrea, aguardando o fechamento do sinal de trânsito para abordar veículos — modus tipo 'saidinha de sinal' em grupo, armado, a pé. O segundo relato refere-se a desentendimento de trânsito envolvendo agressão, não caracterizando padrão de roubo. Nenhum dos 2 relatos menciona uso de moto ou fuga a pé explicitamente. Não há base nas denúncias para afirmar padrão por horário; o pico quantitativo registrado é 00h–03h em Sáb/Dom/Seg, mas os relatos disponíveis não confirmam esse recorte. Dados insuficientes para consolidar modus operandi único.",
+        "suspectProfile": "Dados insuficientes para perfil demográfico. O único relato com descrição operacional menciona grupo de aproximadamente três indivíduos não identificados, armados com armas curtas, atuando de forma coordenada e com uso de ocultação (atrás de outdoor, junto a muro da via férrea). Não há informação sobre idade, vestimenta, vínculo com facção ou reincidência.",
+        "escapeRoutes": "Sem RELINTs da FM nesta área. Nenhuma rota de fuga é descrita explicitamente nas 2 denúncias. O relato do trio armado indica ponto de emboscada junto ao viaduto de Bangu e muro da via férrea (Av. [mencionada] x Rua Barão de Capanema), o que sugere — mas não confirma — possível evasão pelo entorno do viaduto ou pela faixa da ferrovia. Necessário coletar RELINT específico para mapear rotas.",
+        "receivingPoints": "Nenhum ponto de receptação é mencionado nas denúncias ou em RELINTs (inexistentes nesta área). Dados insuficientes.",
         "sources": {
           "relints": 0,
           "denuncias": 2,
-          "ocorrencias": 24
+          "ocorrencias": 8
         }
       },
       "coincidences": [],
       "actionPlan": [
         {
+          "responsible": "FM",
+          "action": "Reforçar patrulhamento ostensivo a pé no trecho Calçadão–Bangu Shopping com foco em fluxo de pedestres, priorizando horários comerciais de pico.",
+          "justification": "Concentração de 13 registros de motocicletas no passeio e 8 fatores SEOP (comércio irregular + veículos de grande porte) comprometem a visibilidade e a segurança do pedestre na área.",
+          "priority": "alta"
+        },
+        {
+          "responsible": "FM",
+          "action": "Estender QMD além das 18h com dupla dedicada ao eixo do calçadão até o fechamento do shopping, com foco em abordagem a motociclistas em passeio.",
+          "justification": "13 fatores de motocicletas trafegando no passeio (GM-Rio) indicam padrão crônico que exige presença ostensiva contínua no horário de maior circulação.",
+          "priority": "alta"
+        },
+        {
+          "responsible": "GM-Rio",
+          "action": "Operação fixa de fiscalização e apreensão de motocicletas trafegando no passeio do calçadão, com rodízio diário de equipes.",
+          "justification": "13 fatores cadastrados de motocicletas no passeio — maior incidência da área e principal vetor de risco a pedestres.",
+          "priority": "alta"
+        },
+        {
           "responsible": "SEOP",
-          "action": "Resolver 5 ocorrências de 'Comércio irregular obstruindo a visibilidade do passeio'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SEOP na área.",
-          "priority": "média"
+          "action": "Operação de ordenamento do comércio irregular e remoção de veículos de grande porte obstruindo a visibilidade no entorno do calçadão.",
+          "justification": "5 fatores de comércio irregular obstruindo o passeio e 3 fatores de veículos de grande porte obstruindo a visibilidade (8 fatores SEOP no total).",
+          "priority": "alta"
         },
         {
           "responsible": "SMAS",
-          "action": "Resolver 3 ocorrências de 'Pessoas em situação de rua'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SMAS na área.",
+          "action": "Acionar equipe de abordagem social para atendimento das pessoas em situação de rua identificadas no trecho Calçadão–Bangu Shopping.",
+          "justification": "3 fatores de pessoas em situação de rua cadastrados na área exigem atendimento qualificado da assistência social.",
           "priority": "baixa"
         },
         {
           "responsible": "CET-Rio",
-          "action": "Resolver 2 ocorrências de 'Ponto de retenção do tráfego'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da CET-Rio na área.",
+          "action": "Revisar sinalização e fluxo viário nos 2 pontos de retenção de tráfego mapeados no entorno do calçadão para reduzir conflito com pedestres.",
+          "justification": "2 fatores de pontos de retenção do tráfego cadastrados na área, agravando exposição de pedestres forçados à pista.",
           "priority": "baixa"
         },
         {
-          "responsible": "GM-Rio",
-          "action": "Resolver 13 ocorrências de 'Motocicletas trafegando no passeio'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da GM-Rio na área.",
-          "priority": "alta"
+          "responsible": "Seconserva",
+          "action": "Avaliar alargamento ou desobstrução do trecho de calçada estreita que está forçando pedestres à pista.",
+          "justification": "1 fator de calçada estreita forçando pedestres à pista, combinado com presença massiva de motos no passeio (13).",
+          "priority": "baixa"
+        },
+        {
+          "responsible": "Comlurb",
+          "action": "Realizar poda da vegetação que encobre iluminação pública no trecho mapeado do calçadão.",
+          "justification": "1 fator de vegetação encobrindo iluminação pública cadastrado na área, comprometendo visibilidade noturna.",
+          "priority": "baixa"
         }
       ]
     },
@@ -14062,97 +14086,110 @@
       "peakDays": "Seg, Sex, Ter",
       "executiveSummary": [
         {
-          "q": "O horário de pico de roubos coincide com a cobertura atual da FM?",
-          "a": "O pico identificado é 12h – 15h, principalmente em Seg, Sex, Ter. A QMD padrão termina às 18h em boa parte das áreas — a sobreposição com o pico precisa ser validada na reunião.",
+          "q": "O pico de criminalidade está coberto pela QMD atual da Força Municipal?",
+          "a": "O pico concentra-se entre 12h e 15h, predominantemente em segundas, sextas e terças, período integralmente dentro da janela diurna coberta pela QMD padrão (até as 18h). Não há, portanto, lacuna de cobertura horária da FM neste recorte.",
           "sources": [
             "Ocorrências",
             "QMD FM"
           ]
         },
         {
-          "q": "Quais fatores urbanos se sobrepõem à mancha criminal?",
-          "a": "Foram identificados 87 fatores ativos no polígono. O mais frequente é 'Ponto de retenção do tráfego' (15 ocorrências). 0 hotspots apresentam coincidência crítica.",
+          "q": "Quais fatores urbanos se sobrepõem à mancha criminal e qual o mais problemático?",
+          "a": "A área tem 87 fatores ativos em 16 tipos distintos, liderados por ponto de retenção do tráfego (15, CET-Rio/GM-Rio), ponto de ônibus com histórico de vandalismo (12, SMTR), comércio irregular obstruindo visibilidade (11, SEOP), veículos de grande porte obstruindo visibilidade (8, SEOP) e pessoas em situação de rua (8, SMAS). O mais problemático em volume é o ponto de retenção do tráfego, mas o conjunto de fatores SEOP (comércio irregular + veículos de grande porte = 19) é o vetor predominante de obstrução de visibilidade no calçadão.",
+          "sources": [
+            "Fatores Urbanos",
+            "Ocorrências"
+          ]
+        },
+        {
+          "q": "Qual a tendência de ocorrências e a recomendação operacional?",
+          "a": "Tendência de alta acentuada: 6 ocorrências em 30 dias, variação de +100% vs mês anterior, ainda que sobre base baixa. Recomenda-se reforço ostensivo da FM no calçadão entre 12h e 15h em seg/ter/sex e acionamento da SEOP para desobstrução de passeio (comércio irregular e veículos de grande porte) como medida prioritária.",
           "sources": [
             "Ocorrências",
             "Fatores Urbanos"
           ]
         },
         {
-          "q": "A variação do mês indica intensificação ou queda?",
-          "a": "Foram 6 ocorrências no último mês, variação de +100% em relação ao mês anterior. Tendência de alta — sugere reforço operacional.",
+          "q": "A cobertura de câmeras é suficiente nos hotspots?",
+          "a": "Há 45 câmeras instaladas na área e o sistema não identificou hotspot sem cobertura de câmera. Não há, no momento, lacuna de videomonitoramento a sanar neste recorte.",
           "sources": [
+            "Câmeras",
             "Ocorrências"
-          ]
-        },
-        {
-          "q": "Há cobertura de câmeras nos hotspots identificados?",
-          "a": "45 câmeras instaladas no polígono. Cobertura adequada nos principais hotspots.",
-          "sources": [
-            "Ocorrências",
-            "Câmeras"
           ]
         }
       ],
       "dynamics": {
-        "modusOperandi": "Padrão criminal heterogêneo — RELINTs locais sugerem alternância entre agentes a pé e em motocicleta, com adaptação ao fluxo de pedestres.",
-        "suspectProfile": "Predominância de indivíduos jovens (heurística sobre denúncias) atuando individualmente ou em dupla; uso recorrente de capacete e roupas neutras para dificultar a identificação.",
-        "escapeRoutes": "Rotas de fuga são detalhadas nos RELINTs específicos da área — 1 RELINT consultado. Padrões recorrentes: vias paralelas com pouca iluminação e acessos a transporte público.",
-        "receivingPoints": "Pontos de receptação reportados pelo Disque Denúncia tendem a se concentrar em comércio informal próximo aos hotspots — recomenda-se cruzamento com operações SEOP em curso.",
+        "modusOperandi": "Predominância de furtos e roubos rápidos contra transeuntes, com foco em subtração de celulares, aproveitando momentos de distração em áreas de espera, travessias e acessos ao transporte público. Conforme RELINT, atuação se dá a pé, em motocicletas e bicicletas, em ambiente de confusão visual gerado por ambulantes irregulares e aglomeração nos acessos ferroviários. Pico quantitativo das ocorrências entre 12h–15h (Seg, Sex, Ter), coincidindo com horário comercial de alta retenção de pedestres descrito no RELINT. A amostra de denúncia (1 relato em 90d) menciona adicionalmente assaltos noturnos a transeuntes com emprego de arma de fogo nas imediações da estação/Receita Federal — modalidade mais grave que se sobrepõe ao padrão diurno de furtos oportunistas. As contagens de denúncias com menção a 'moto' (0) e 'a pé' (0) não permitem corroborar quantitativamente a divisão entre essas modalidades; a base é o RELINT.",
+        "suspectProfile": "Dados insuficientes para perfil demográfico (idade, sexo, vestimenta). RELINT descreve 'indivíduos atuando a pé, motocicletas e bicicletas', sem caracterização pessoal, e cita influência de ORCRIM nas comunidades próximas como fator de vulnerabilidade das rotas de dispersão — sem vincular suspeitos identificados. A denúncia do Disque Denúncia refere 'indivíduos não identificados' portando armas de fogo no período noturno. Não há, nos dados fornecidos, elementos para descrever número de integrantes por ação, faixa etária ou vínculo facial/operacional.",
+        "escapeRoutes": "RELINT menciona genericamente: acesso direto ao calçadão, vias secundárias do bairro e vias adjacentes com múltiplas rotas de fuga via motocicletas/bicicletas, além de rotas de dispersão em direção a comunidades sob influência de ORCRIM (sem nomeá-las no texto fornecido). A denúncia do Disque Denúncia indica fuga em sentido à 'Rua Barcelos [NOME]' a partir do entorno da estação/Receita Federal. Não há, nos dados fornecidos, identificação nominal de demais ruas, viadutos ou estações específicas usadas como rota.",
+        "receivingPoints": "Dados insuficientes. Nenhum RELINT ou denúncia fornecida menciona pontos concretos de receptação (lojas, ferros-velhos, feiras, endereços) associados aos produtos subtraídos na área.",
         "sources": {
           "relints": 1,
           "denuncias": 1,
-          "ocorrencias": 18
+          "ocorrencias": 6
         }
       },
       "coincidences": [],
       "actionPlan": [
         {
-          "responsible": "Comlurb",
-          "action": "Resolver 8 ocorrências de 'Vegetação encobrindo iluminação pública'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Comlurb na área.",
+          "responsible": "FM",
+          "action": "Reforçar policiamento ostensivo a pé no calçadão da estação, priorizando o entorno dos pontos de ônibus e trechos com comércio irregular",
+          "justification": "Área concentra 21 fatores SEOP (11 comércio irregular + 8 veículos de grande porte + 2 estacionamento irregular) e 12 pontos de ônibus com histórico de vandalismo, exigindo presença ostensiva contínua. Nenhuma coincidência crítica foi identificada no payload.",
           "priority": "alta"
         },
         {
-          "responsible": "RioLuz",
-          "action": "Resolver 4 ocorrências de 'Área mal iluminada com circulação de pedestres'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da RioLuz na área.",
-          "priority": "média"
-        },
-        {
-          "responsible": "Seconserva",
-          "action": "Resolver 4 ocorrências de 'Mobiliário urbano desviando pedestres para a pista'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Seconserva na área.",
-          "priority": "média"
+          "responsible": "FM",
+          "action": "Ajustar a QMD para estender cobertura no calçadão até o último trem, com dupla dedicada ao eixo da estação",
+          "justification": "12 pontos de ônibus com histórico de vandalismo e 8 registros de pessoas em situação de rua indicam vulnerabilidade fora do horário padrão de 18h; cobertura adicional necessária no período noturno.",
+          "priority": "alta"
         },
         {
           "responsible": "SEOP",
-          "action": "Resolver 11 ocorrências de 'Comércio irregular obstruindo a visibilidade do passeio'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SEOP na área.",
+          "action": "Operação de ordenamento urbano focada em comércio irregular e veículos de grande porte no calçadão e vias de acesso à estação",
+          "justification": "11 fatores de comércio irregular obstruindo visibilidade do passeio, 8 veículos de grande porte obstruindo visibilidade e 2 estacionamentos irregulares forçando pedestres à pista — total de 21 fatores sob responsabilidade da SEOP.",
+          "priority": "alta"
+        },
+        {
+          "responsible": "Comlurb",
+          "action": "Programar poda de vegetação nos 8 pontos cadastrados que encobrem iluminação pública e no ponto que obstrui visibilidade do passeio",
+          "justification": "9 fatores Comlurb mapeados na área (8 vegetação encobrindo iluminação + 1 obstruindo visibilidade), todos comprometendo a eficácia da iluminação existente.",
           "priority": "alta"
         },
         {
           "responsible": "SMAS",
-          "action": "Resolver 8 ocorrências de 'Pessoas em situação de rua'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SMAS na área.",
+          "action": "Realizar abordagem social sistemática nos pontos onde há registro de pessoas em situação de rua, com encaminhamento para acolhimento",
+          "justification": "8 registros de pessoas em situação de rua na área — limite para classificação de alta prioridade conforme regra de 8+ fatores.",
+          "priority": "alta"
+        },
+        {
+          "responsible": "SMTR",
+          "action": "Vistoriar e reparar mobiliário dos pontos de ônibus vandalizados no entorno da estação, com cronograma de manutenção preventiva",
+          "justification": "12 pontos de ônibus com histórico de vandalismo cadastrados na área, o maior volume entre os fatores SMTR.",
           "priority": "alta"
         },
         {
           "responsible": "CET-Rio",
-          "action": "Resolver 15 ocorrências de 'Ponto de retenção do tráfego'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da CET-Rio na área.",
+          "action": "Revisar a sinalização e o ciclo semafórico nos 15 pontos de retenção de tráfego mapeados no entorno da estação",
+          "justification": "15 pontos de retenção de tráfego cadastrados — maior número de fatores CET-Rio da área, ultrapassando o limiar de 8+ para alta prioridade.",
           "priority": "alta"
         },
         {
           "responsible": "GM-Rio",
-          "action": "Resolver 7 ocorrências de 'Motocicletas trafegando no passeio'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da GM-Rio na área.",
-          "priority": "média"
+          "action": "Fiscalização dedicada contra circulação de motocicletas no passeio do calçadão, com autuação e apreensão",
+          "justification": "7 fatores de motocicletas trafegando no passeio registrados — classificação de média prioridade conforme regra de 4-7 fatores.",
+          "priority": "media"
         },
         {
-          "responsible": "SMTR",
-          "action": "Resolver 12 ocorrências de 'Ponto de ônibus com histórico de vandalismo'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SMTR na área.",
-          "priority": "alta"
+          "responsible": "RioLuz",
+          "action": "Reforçar iluminação nos 4 trechos de circulação de pedestres e 2 áreas de parada de veículos identificados como mal iluminados",
+          "justification": "6 fatores RioLuz mapeados (4 circulação de pedestres + 2 parada de veículos), agravados pelos 8 pontos de vegetação que encobrem luminárias existentes.",
+          "priority": "media"
+        },
+        {
+          "responsible": "Seconserva",
+          "action": "Remover mobiliário urbano abandonado e reorganizar o mobiliário que desvia pedestres para a pista no calçadão",
+          "justification": "7 fatores Seconserva na área (4 mobiliário desviando pedestres + 2 mobiliário abandonado servindo de esconderijo + 1 calçada estreita), faixa de média prioridade.",
+          "priority": "media"
         }
       ]
     },
@@ -14163,7 +14200,7 @@
       "aisp": "AISP 23",
       "bairro": "Ipanema / Leblon",
       "center": [
-        -22.982247071243773,
+        -22.982247071243766,
         -43.21601932454183
       ],
       "zoom": 16,
@@ -15654,46 +15691,47 @@
       "peakDays": "Seg, Qua, Qui",
       "executiveSummary": [
         {
-          "q": "O horário de pico de roubos coincide com a cobertura atual da FM?",
-          "a": "O pico identificado é 19h – 22h, principalmente em Seg, Qua, Qui. A QMD padrão termina às 18h em boa parte das áreas — a sobreposição com o pico precisa ser validada na reunião.",
+          "q": "O pico de crime está coberto pela QMD atual da Força Municipal?",
+          "a": "Não. O pico concentra-se entre 19h e 22h (Seg, Qua, Qui), enquanto a QMD padrão encerra às 18h. As 5 coincidências identificadas registram explicitamente a lacuna 'janela noturna fora da QMD'.",
           "sources": [
             "Ocorrências",
             "QMD FM"
           ]
         },
         {
-          "q": "Quais fatores urbanos se sobrepõem à mancha criminal?",
-          "a": "Foram identificados 147 fatores ativos no polígono. O mais frequente é 'Pessoas em situação de rua' (53 ocorrências). 4 hotspots apresentam coincidência crítica.",
+          "q": "Quais fatores urbanos se sobrepõem à mancha criminal e qual é o mais problemático?",
+          "a": "Os fatores recorrentes nas coincidências são 'Área mal iluminada com circulação de pedestres' (presente em 4 das 5 coincidências) e 'Pessoas em situação de rua' (em 3 das 5), além de vegetação encobrindo iluminação, ponto de retenção do tráfego e veículos de grande porte. O fator mais problemático é a iluminação deficiente (RioLuz), por sua presença majoritária nos hotspots de risco 98–99.",
           "sources": [
             "Ocorrências",
             "Fatores Urbanos"
           ]
         },
         {
-          "q": "A variação do mês indica intensificação ou queda?",
-          "a": "Foram 5 ocorrências no último mês, variação de +67% em relação ao mês anterior. Tendência de alta — sugere reforço operacional.",
+          "q": "Qual é a tendência de ocorrências e qual recomendação operacional?",
+          "a": "Tendência de ALTA acentuada: 5 ocorrências em 30 dias, variação de +67% vs mês anterior. Recomenda-se reforço imediato de policiamento ostensivo da FM na janela 19h–22h em Seg/Qua/Qui, focado nos hotspots de risco ≥98 (COIN-JAR-01, 02, 03 e 05).",
           "sources": [
-            "Ocorrências"
+            "Ocorrências",
+            "QMD FM"
           ]
         },
         {
-          "q": "Há cobertura de câmeras nos hotspots identificados?",
-          "a": "30 câmeras instaladas no polígono. Alguns hotspots permanecem sem cobertura — ver Painel de Coincidências para detalhes.",
+          "q": "Como está a cobertura de câmeras nos hotspots e onde há lacunas?",
+          "a": "A área dispõe de 30 câmeras instaladas, mas há hotspot sem cobertura: o COIN-JAR-05 (-22.9835, -43.216), de risco 99, está sem câmera de monitoramento. Recomenda-se priorizar instalação ou reposicionamento de câmera neste ponto, dado o risco crítico e a lacuna noturna concomitante.",
           "sources": [
-            "Ocorrências",
-            "Câmeras"
+            "Câmeras",
+            "Ocorrências"
           ]
         }
       ],
       "dynamics": {
-        "modusOperandi": "Padrão criminal heterogêneo — RELINTs locais sugerem alternância entre agentes a pé e em motocicleta, com adaptação ao fluxo de pedestres.",
-        "suspectProfile": "Predominância de indivíduos jovens (heurística sobre denúncias) atuando individualmente ou em dupla; uso recorrente de capacete e roupas neutras para dificultar a identificação.",
-        "escapeRoutes": "Rotas de fuga são detalhadas nos RELINTs específicos da área — 1 RELINT consultado. Padrões recorrentes: vias paralelas com pouca iluminação e acessos a transporte público.",
-        "receivingPoints": "Pontos de receptação reportados pelo Disque Denúncia tendem a se concentrar em comércio informal próximo aos hotspots — recomenda-se cruzamento com operações SEOP em curso.",
+        "modusOperandi": "Predominância de ação a pé, com apoio de motocicletas e bicicletas, conforme RELINT. Atuação em momentos de distração da vítima em áreas de espera, travessias e acessos ao transporte público e à orla. Alvos principais: transeuntes, ciclistas, frequentadores da orla e turistas, com foco na subtração de aparelhos celulares. Aproximações rápidas favorecidas por vegetação densa e nichos formados por tapumes de obras. Pico operacional 19h–22h (Seg, Qua, Qui), embora os RELINTs também destaquem finais de semana e horários de lazer nos acessos à praia. A amostra única do Disque Denúncia (1 relato em 90d, sem menção a 'moto' ou 'a pé') reforça atuação noturna em praça, com roubo e ameaça a transeuntes por usuários de drogas não identificados. Dados quantitativos de denúncia insuficientes para confirmar proporção entre ação a pé e motorizada — a base é o RELINT.",
+        "suspectProfile": "Dados insuficientes para perfil demográfico detalhado (idade, vestimenta, composição etária). RELINT descreve genericamente 'furtadores' atuando a pé, em motocicletas e bicicletas, sem qualificação adicional. A denúncia menciona 'vários usuários de drogas não identificados' atuando em praça da área no período noturno. Não há nos dados fornecidos descrição de número fixo de integrantes por ação nem vínculo nominal a facção ou grupo organizado.",
+        "escapeRoutes": "Rotas explicitamente citadas no RELINT: (i) ciclovia interna do parque, utilizada por suspeitos em bicicleta/moto; (ii) saídas para Av. Epitácio Pessoa; (iii) saídas para Av. Delfim Moreira; (iv) múltiplas entradas/saídas não controladas do parque, favorecendo dispersão imediata; (v) acessos abertos à orla, sem barreiras físicas, permitindo fuga em direção à praia (Ipanema/Leblon); (vi) nichos formados por tapumes de obras usados como esconderijo intermediário. A denúncia do Disque Denúncia menciona fuga para comunidade adjacente (nome redigido) a partir da praça citada.",
+        "receivingPoints": "Dados insuficientes. Nem os RELINTs fornecidos, nem a amostra de Disque Denúncia, nem os fatores urbanos listados indicam pontos concretos de receptação (comércios, feiras, endereços ou comunidades específicas como destino de aparelhos subtraídos) na área do Jardim de Alah.",
         "sources": {
           "relints": 1,
           "denuncias": 1,
-          "ocorrencias": 15
+          "ocorrencias": 5
         }
       },
       "coincidences": [
@@ -15746,57 +15784,57 @@
       "actionPlan": [
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 1 — -22.986, -43.2145 na janela Pico em 19h – 22h, dias Seg, Qua, Qui",
-          "justification": "3 ocorrências em 90 dias, concentradas em raio de 50m — janela noturna fora da QMD (COIN-JAR-01).",
+          "action": "Estender QMD com patrulhamento ostensivo nos hotspots COIN-JAR-01, COIN-JAR-02, COIN-JAR-03, COIN-JAR-05 e COIN-JAR-06 na janela 19h–22h, segundas, quartas e quintas",
+          "justification": "Cinco coincidências com risco ≥98 (exceto COIN-JAR-06, risco 69) compartilham mesma janela noturna fora da QMD padrão",
           "priority": "alta"
         },
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 2 — -22.9795, -43.2175 na janela Pico em 19h – 22h, dias Seg, Qua, Qui",
-          "justification": "2 ocorrências em 90 dias, concentradas em raio de 50m — janela noturna fora da QMD (COIN-JAR-02).",
+          "action": "Posicionar dupla fixa no entorno de -22.986,-43.2145 (COIN-JAR-01) nos picos 19h–22h, com deslocamento alternado para -22.9795,-43.2175 (COIN-JAR-02)",
+          "justification": "COIN-JAR-01 concentra 3 ocorrências em 90 dias em raio de 50m (risco 99) e COIN-JAR-02 soma 2 ocorrências (risco 98), ambos fora da cobertura QMD",
           "priority": "alta"
         },
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 3 — -22.985, -43.216 na janela Pico em 19h – 22h, dias Seg, Qua, Qui",
-          "justification": "1 ocorrências em 90 dias, concentradas em raio de 50m — janela noturna fora da QMD (COIN-JAR-03).",
-          "priority": "alta"
-        },
-        {
-          "responsible": "Comlurb",
-          "action": "Resolver 18 ocorrências de 'Vegetação encobrindo iluminação pública'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Comlurb na área.",
+          "action": "Solicitar instalação de câmera de monitoramento no hotspot -22.9835,-43.216 (COIN-JAR-05)",
+          "justification": "COIN-JAR-05 é o único hotspot da área sem câmera de monitoramento, com risco 99",
           "priority": "alta"
         },
         {
           "responsible": "RioLuz",
-          "action": "Resolver 32 ocorrências de 'Área mal iluminada com circulação de pedestres'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da RioLuz na área.",
+          "action": "Executar vistoria e reforço de iluminação nos 32 pontos cadastrados de área mal iluminada com circulação de pedestres, priorizando os entornos dos hotspots COIN-JAR-01, JAR-02, JAR-03, JAR-05 e JAR-06",
+          "justification": "32 fatores de iluminação deficiente registrados na área e citados em todas as 5 coincidências críticas",
           "priority": "alta"
-        },
-        {
-          "responsible": "Seconserva",
-          "action": "Resolver 7 ocorrências de 'Vãos ou cavidades usados como esconderijo'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Seconserva na área.",
-          "priority": "média"
-        },
-        {
-          "responsible": "SEOP",
-          "action": "Resolver 3 ocorrências de 'Comércio irregular obstruindo a visibilidade do passeio'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SEOP na área.",
-          "priority": "baixa"
         },
         {
           "responsible": "SMAS",
-          "action": "Resolver 53 ocorrências de 'Pessoas em situação de rua'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SMAS na área.",
+          "action": "Acionar equipe de abordagem social nos pontos de pessoas em situação de rua dos hotspots COIN-JAR-03, COIN-JAR-05 e COIN-JAR-06",
+          "justification": "53 fatores de pessoas em situação de rua na área e 3 coincidências críticas associadas a esse fator",
           "priority": "alta"
         },
         {
+          "responsible": "Comlurb",
+          "action": "Realizar poda da vegetação que encobre iluminação pública, com prioridade ao entorno do hotspot COIN-JAR-05",
+          "justification": "18 fatores de vegetação encobrindo iluminação na área; COIN-JAR-05 (risco 99) cita explicitamente esse fator combinado com má iluminação",
+          "priority": "alta"
+        },
+        {
+          "responsible": "SEOP",
+          "action": "Fiscalizar e remover veículos de grande porte estacionados irregularmente no entorno de -22.9795,-43.2175 (COIN-JAR-02)",
+          "justification": "COIN-JAR-02 (risco 98) cita veículos de grande porte obstruindo visibilidade; área soma 3 fatores desse tipo, 3 de estacionamento irregular e 3 de comércio irregular",
+          "priority": "media"
+        },
+        {
+          "responsible": "Seconserva",
+          "action": "Vistoriar e lacrar vãos/cavidades e mobiliário usados como esconderijo nos entornos dos hotspots da área",
+          "justification": "7 fatores de vãos/cavidades como esconderijo, 4 de mobiliário como esconderijo e 2 de mobiliário desviando pedestres registrados na área",
+          "priority": "media"
+        },
+        {
           "responsible": "CET-Rio",
-          "action": "Resolver 6 ocorrências de 'Ponto de retenção do tráfego'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da CET-Rio na área.",
-          "priority": "média"
+          "action": "Avaliar e mitigar o ponto de retenção de tráfego no entorno de -22.986,-43.2145 (COIN-JAR-01)",
+          "justification": "COIN-JAR-01 (risco 99) cita ponto de retenção do tráfego como fator; área registra 6 fatores desse tipo",
+          "priority": "media"
         }
       ]
     },
@@ -15807,8 +15845,8 @@
       "aisp": "AISP 2",
       "bairro": "Botafogo / Urca",
       "center": [
-        -22.954403908938033,
-        -43.17785949541126
+        -22.95440390893804,
+        -43.177859495411234
       ],
       "zoom": 16,
       "polygon": [
@@ -17153,46 +17191,48 @@
       "peakDays": "Dom, Sex",
       "executiveSummary": [
         {
-          "q": "O horário de pico de roubos coincide com a cobertura atual da FM?",
-          "a": "O pico identificado é 17h – 20h, principalmente em Dom, Sex. A QMD padrão termina às 18h em boa parte das áreas — a sobreposição com o pico precisa ser validada na reunião.",
+          "q": "O pico criminal está coberto pela QMD atual da Força Municipal?",
+          "a": "Não. O pico se concentra entre 17h e 20h, predominantemente aos domingos e sextas, enquanto a QMD padrão da FM encerra às 18h. Todas as 5 coincidências identificadas registram explicitamente a lacuna 'pico fora da cobertura padrão'.",
           "sources": [
             "Ocorrências",
             "QMD FM"
           ]
         },
         {
-          "q": "Quais fatores urbanos se sobrepõem à mancha criminal?",
-          "a": "Foram identificados 67 fatores ativos no polígono. O mais frequente é 'Área mal iluminada com circulação de pedestres' (22 ocorrências). 4 hotspots apresentam coincidência crítica.",
+          "q": "Quais fatores urbanos se sobrepõem à mancha criminal e qual é o mais problemático?",
+          "a": "Dos 67 fatores ativos (14 tipos), 'Área mal iluminada com circulação de pedestres' é o mais problemático: aparece 22 vezes e está presente em 4 das 5 coincidências críticas (COIN-LAU-01, 02, 04 e 05), combinado com 'Ponto de retenção do tráfego' (7 ocorrências do fator) nos hotspots de maior risco. Também figuram 'Estacionamento irregular forçando pedestres à pista' (COIN-LAU-02) e 'Pessoas em situação de rua' (COIN-LAU-03), demandando atuação de RioLuz, Comlurb (vegetação encobrindo iluminação, 8 registros), CET-Rio/GM-Rio, SEOP e SMAS.",
           "sources": [
-            "Ocorrências",
-            "Fatores Urbanos"
-          ]
-        },
-        {
-          "q": "A variação do mês indica intensificação ou queda?",
-          "a": "Foram 2 ocorrências no último mês, variação de -88% em relação ao mês anterior. Tendência de queda — monitorar deslocamento para áreas adjacentes.",
-          "sources": [
+            "Fatores Urbanos",
             "Ocorrências"
           ]
         },
         {
-          "q": "Há cobertura de câmeras nos hotspots identificados?",
-          "a": "50 câmeras instaladas no polígono. Alguns hotspots permanecem sem cobertura — ver Painel de Coincidências para detalhes.",
+          "q": "Qual a tendência de criminalidade na área e qual recomendação operacional decorre dela?",
+          "a": "Tendência de forte queda: 2 ocorrências em 30 dias, variação de -88% vs mês anterior, com apenas 1 denúncia no Disque Denúncia em 90 dias. Recomenda-se manter presença ostensiva da FM focada nos 5 hotspots no pico 17h–20h (Dom/Sex) para consolidar a queda, sem ampliação de efetivo.",
           "sources": [
             "Ocorrências",
-            "Câmeras"
+            "Disque Denúncia"
+          ]
+        },
+        {
+          "q": "Como está a cobertura de câmeras nos hotspots e quais as lacunas?",
+          "a": "A área dispõe de 50 câmeras instaladas, mas há hotspots sem cobertura: COIN-LAU-02 (risco 85) e COIN-LAU-03 (risco 68) estão explicitamente sem câmera de monitoramento. Prioridade de instalação/realocação nesses dois pontos, com destaque para COIN-LAU-02 por concentrar 3 ocorrências em raio de 50m e combinar iluminação deficiente com estacionamento irregular.",
+          "sources": [
+            "Câmeras",
+            "Ocorrências",
+            "Fatores Urbanos"
           ]
         }
       ],
       "dynamics": {
-        "modusOperandi": "Padrão criminal heterogêneo — RELINTs locais sugerem alternância entre agentes a pé e em motocicleta, com adaptação ao fluxo de pedestres.",
-        "suspectProfile": "Predominância de indivíduos jovens (heurística sobre denúncias) atuando individualmente ou em dupla; uso recorrente de capacete e roupas neutras para dificultar a identificação.",
-        "escapeRoutes": "Rotas de fuga são detalhadas nos RELINTs específicos da área — 0 RELINTs consultados. Padrões recorrentes: vias paralelas com pouca iluminação e acessos a transporte público.",
-        "receivingPoints": "Pontos de receptação reportados pelo Disque Denúncia tendem a se concentrar em comércio informal próximo aos hotspots — recomenda-se cruzamento com operações SEOP em curso.",
+        "modusOperandi": "Amostra única de denúncia descreve ação coletiva (cerca de dez indivíduos) abordando transeuntes e passageiros dentro de ônibus na pista sentido Flamengo, em frente ao Botafogo Praia Shopping. Não há menção a uso de motocicleta nem a deslocamento 'a pé' nos relatos (0 menções em ambos). Pico de ocorrências entre 17h–20h, com concentração em domingos e sextas, sugere atuação no fim de tarde/início da noite, coincidindo com baixa luminosidade — reforçada pelo fator urbano dominante 'área mal iluminada com circulação de pedestres' (22 ocorrências). Alvos identificados: pedestres e usuários de transporte coletivo em ponto de retenção do tráfego (7 ocorrências), o que favorece abordagem a ônibus parados.",
+        "suspectProfile": "Dados insuficientes para perfil demográfico detalhado. A única denúncia disponível menciona apenas 'cerca de dez indivíduos não identificados, bem jovens', sem descrição de vestimenta, cor, estatura ou sinais particulares. Sem RELINTs da Força Municipal nesta área para complementar.",
+        "escapeRoutes": "Nenhum RELINT disponível para esta área e a denúncia amostrada não descreve rota de fuga. Dados insuficientes para indicar rotas concretas.",
+        "receivingPoints": "Dados insuficientes. Nenhuma denúncia ou RELINT fornecido menciona pontos de receptação.",
         "sources": {
           "relints": 0,
           "denuncias": 1,
-          "ocorrencias": 6
+          "ocorrencias": 2
         }
       },
       "coincidences": [
@@ -17245,62 +17285,62 @@
       "actionPlan": [
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 1 — -22.9525, -43.176 na janela Pico em 17h – 20h, dias Dom, Sex",
-          "justification": "5 ocorrências em 90 dias, concentradas em raio de 50m — pico fora da cobertura padrão (COIN-LAU-01).",
+          "action": "Reforçar policiamento ostensivo nos hotspots COIN-LAU-01 e COIN-LAU-04 (risco 95) com patrulhamento dedicado nas sextas e domingos das 17h às 20h",
+          "justification": "COIN-LAU-01 e COIN-LAU-04 têm risco 95 com pico fora da cobertura padrão da QMD (até 18h); concentram 7 ocorrências em 90 dias",
           "priority": "alta"
         },
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 2 — -22.9565, -43.1765 na janela Pico em 17h – 20h, dias Dom, Sex",
-          "justification": "3 ocorrências em 90 dias, concentradas em raio de 50m — Hotspot sem câmera de monitoramento; pico fora da cobertura padrão (COIN-LAU-02).",
+          "action": "Estender a QMD até 20h nas sextas e domingos em toda a área Lauro Müller/General Severiano/Venceslau Brás",
+          "justification": "Todas as 5 coincidências (COIN-LAU-01 a 05) apontam pico 17h-20h em Dom/Sex fora da cobertura padrão",
           "priority": "alta"
         },
         {
           "responsible": "FM",
-          "action": "Reforço operacional em Hotspot 3 — -22.9505, -43.176 na janela Pico em 17h – 20h, dias Dom, Sex",
-          "justification": "2 ocorrências em 90 dias, concentradas em raio de 50m — Hotspot sem câmera de monitoramento; pico fora da cobertura padrão (COIN-LAU-03).",
-          "priority": "média"
-        },
-        {
-          "responsible": "Comlurb",
-          "action": "Resolver 8 ocorrências de 'Vegetação encobrindo iluminação pública'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Comlurb na área.",
+          "action": "Solicitar instalação de câmeras de monitoramento nos hotspots COIN-LAU-02 e COIN-LAU-03",
+          "justification": "COIN-LAU-02 (risco 85) e COIN-LAU-03 (risco 68) apresentam lacuna explícita de ausência de câmera",
           "priority": "alta"
         },
         {
           "responsible": "RioLuz",
-          "action": "Resolver 22 ocorrências de 'Área mal iluminada com circulação de pedestres'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da RioLuz na área.",
+          "action": "Executar manutenção/reforço de iluminação pública na área, priorizando os entornos dos hotspots COIN-LAU-01, 02, 04 e 05",
+          "justification": "22 fatores de área mal iluminada com circulação de pedestres registrados na área e presentes em 4 das 5 coincidências",
+          "priority": "alta"
+        },
+        {
+          "responsible": "CET-Rio",
+          "action": "Diagnosticar e mitigar pontos de retenção do tráfego nos hotspots COIN-LAU-01, COIN-LAU-04 e COIN-LAU-05",
+          "justification": "7 fatores de ponto de retenção do tráfego na área, presentes em 3 coincidências de alto risco (risco 95, 95 e 80)",
+          "priority": "media"
+        },
+        {
+          "responsible": "Comlurb",
+          "action": "Realizar poda de vegetação que encobre iluminação e obstrui visibilidade do passeio em toda a área",
+          "justification": "15 fatores combinados (8 de vegetação encobrindo iluminação + 7 obstruindo visibilidade) — órgão com 8+ fatores",
+          "priority": "alta"
+        },
+        {
+          "responsible": "SEOP",
+          "action": "Operação de fiscalização contra estacionamento irregular e comércio irregular no entorno do hotspot COIN-LAU-02",
+          "justification": "COIN-LAU-02 (risco 85) tem estacionamento irregular como fator; área concentra 8 fatores SEOP (4 comércio irregular + 4 estacionamento irregular)",
           "priority": "alta"
         },
         {
           "responsible": "Seconserva",
-          "action": "Resolver 2 ocorrências de 'Calçada estreita forçando pedestres à pista'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da Seconserva na área.",
-          "priority": "baixa"
-        },
-        {
-          "responsible": "SEOP",
-          "action": "Resolver 4 ocorrências de 'Comércio irregular obstruindo a visibilidade do passeio'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SEOP na área.",
-          "priority": "média"
+          "action": "Inspecionar e vedar vãos/cavidades usados como esconderijo e corrigir mobiliário urbano e calçadas estreitas na área",
+          "justification": "5 fatores Seconserva na área (2 vãos como esconderijo + 2 calçadas estreitas + 1 mobiliário desviando pedestres)",
+          "priority": "media"
         },
         {
           "responsible": "SMAS",
-          "action": "Resolver 3 ocorrências de 'Pessoas em situação de rua'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da SMAS na área.",
+          "action": "Abordagem social às pessoas em situação de rua no entorno do hotspot COIN-LAU-03",
+          "justification": "COIN-LAU-03 (risco 68) tem pessoas em situação de rua como fator; 3 registros desse fator na área",
           "priority": "baixa"
         },
         {
-          "responsible": "CET-Rio",
-          "action": "Resolver 7 ocorrências de 'Ponto de retenção do tráfego'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da CET-Rio na área.",
-          "priority": "média"
-        },
-        {
           "responsible": "GM-Rio",
-          "action": "Resolver 2 ocorrências de 'Motocicletas trafegando no passeio'",
-          "justification": "Fator urbano mais frequente sob responsabilidade da GM-Rio na área.",
+          "action": "Fiscalizar motocicletas trafegando no passeio na área Lauro Müller/General Severiano/Venceslau Brás",
+          "justification": "2 fatores registrados de motocicletas no passeio, em área com pedestres já empurrados à pista por outros fatores",
           "priority": "baixa"
         }
       ]
