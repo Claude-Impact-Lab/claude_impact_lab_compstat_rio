@@ -19,10 +19,6 @@ export default function AreaHeader({ area, onExport }) {
             <FileText size={14} />
             Relatório .docx
           </button>
-          <button className="btn btn-primary" onClick={onExport}>
-            <Download size={14} />
-            Exportar dossiê
-          </button>
         </div>
       </div>
 
