@@ -21,12 +21,6 @@ com prompt caching ativo), e devolve **alertas estruturados** ao frontend
 CompStat. Cada alerta carrega bairro, logradouro, ponto de referência,
 horário, padrão de modus operandi, tipo de crime, e um score de confiança.
 
-> **Twitter foi removido da POC.** Tanto `twikit` quanto `tweety-ns` dependem
-> da extração do `x-client-transaction-id` do bundle JS do X, que quebrou em
-> 18/mar/2026 — ambas libs retornam `Couldn't get KEY_BYTE indices` e o
-> upstream não tem fix publicado. Quando o ecossistema estabilizar, adicionar
-> uma nova fonte é uma função em `crawler/sources/` + uma linha no pipeline.
-
 ## Stack
 
 - **FastAPI** + Uvicorn (Python 3.13)
