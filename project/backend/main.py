@@ -4,8 +4,12 @@ Roda com: `uvicorn main:app --reload --port 8000`
 (do diretório `project/backend`, com .venv ativo).
 
 Endpoints:
-  GET  /health             — sanidade.
-  POST /api/crawler/run    — executa o pipeline e devolve alertas estruturados.
+  GET  /health              — sanidade.
+  POST /api/crawler/run     — executa o pipeline de monitor web (G1, O Dia).
+  POST /api/build/run       — dispara o ETL CompStat (uma execução por vez).
+  GET  /api/build/stream    — stream SSE com progresso do ETL.
+  GET  /api/build/status    — snapshot textual do estado (polling-fallback).
+  GET  /api/build/result    — payload final do último ETL bem-sucedido.
 """
 
 from __future__ import annotations
@@ -16,11 +20,12 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-# Carrega .env antes de importar módulos que leem env (twitter).
+# Carrega .env antes de importar módulos que leem env (twitter, anthropic).
 load_dotenv()
 
 from crawler.models import CrawlerRunResponse  # noqa: E402
 from crawler.pipeline import run as run_pipeline  # noqa: E402
+from routers.build import router as build_router  # noqa: E402
 
 
 def _allowed_origins() -> list[str]:
@@ -36,6 +41,8 @@ app.add_middleware(
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
+
+app.include_router(build_router)
 
 
 @app.get("/health")

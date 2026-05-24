@@ -3,7 +3,7 @@
 ## Localização
 
 ```
-sh_area_forca/
+dados/sh_area_forca/
 ├── areas_forca_municipal.shp       # geometrias (LineString → Polygon)
 ├── areas_forca_municipal.shx       # índice
 ├── areas_forca_municipal.dbf       # atributos
@@ -43,7 +43,7 @@ sh_area_forca/
 > - "Bangu" → `bangu-calcadao`
 > - "SFX" / "Afonso Pena" → `sfx-afonso-pena`
 
-A fonte autoritativa do mapeamento nome→AISP→bairro está em `scripts/build_data.py` (`AREA_SHORT`, `AREA_ID`, `AREA_META`). Quando precisar de metadados completos, consulte esse arquivo.
+A fonte autoritativa do mapeamento nome→AISP→bairro está em `project/backend/etl/build_data.py` (`AREA_SHORT`, `AREA_ID`, `AREA_META`). Quando precisar de metadados completos, consulte esse arquivo.
 
 ## CRS
 
@@ -61,7 +61,7 @@ Verifique antes de usar (não assuma instaladas):
 python3 -c "import shapefile, shapely; print(shapefile.__version__, shapely.__version__)"
 ```
 
-O `scripts/build_data.py` confirma que `pyshp` (módulo `shapefile`) e `shapely` estão disponíveis. `geopandas` **não está instalado**.
+O `project/backend/etl/build_data.py` confirma que `pyshp` (módulo `shapefile`) e `shapely` estão disponíveis. `geopandas` **não está instalado**.
 
 ## Receita: resolver nome de área → polígono
 
@@ -70,7 +70,7 @@ import shapefile
 from shapely.geometry import Polygon, Point
 
 # 1. Carregar shapefile
-sf = shapefile.Reader("sh_area_forca/areas_forca_municipal.shp")
+sf = shapefile.Reader("dados/sh_area_forca/areas_forca_municipal.shp")
 fields = [f[0] for f in sf.fields[1:]]  # pular o deletion flag
 
 # 2. Construir índice nome → polygon

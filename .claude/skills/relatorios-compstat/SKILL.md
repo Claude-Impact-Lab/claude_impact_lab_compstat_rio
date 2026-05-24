@@ -70,4 +70,4 @@ Se o usuário não citou área, peça antes de prosseguir — não invente nem u
 - **As 4 perguntas norteadoras estão implementadas** (P1, P2, P3, P4).
 - **Relatório completo (A) ainda não tem orquestrador (`relatorio-analitico-area.md` é TODO)** — quando o usuário pedir o relatório completo, execute as 4 perguntas em sequência e monte um documento sintetizando-as no formato do anexo (ou avise que o orquestrador estruturado ainda virá).
 - Output é markdown — não gera `.docx` nem `.pdf`.
-- Não gera mapas/heatmaps (continuam no `scripts/build_data.py` + frontend).
+- Não gera mapas/heatmaps (continuam no `project/backend/etl/build_data.py` + frontend).

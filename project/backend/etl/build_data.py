@@ -1,65 +1,55 @@
-#!/usr/bin/env python3
-"""
-ETL: read the real CompStat data sources in /dados, /relints and /sh_area_forca,
-filter to the last 90 days available, aggregate per FM area, and emit a single
-JSON consumed by the frontend.
+"""ETL CompStat Rio — async, emite eventos de progresso para SSE.
 
-Output: project/frontend/public/data/real.json (committed for prototype use).
+Migrado de `scripts/build_data.py`. Diferenças:
 
-Notes
------
-- "Last 30 / 90 days" is computed from the most recent date present in
-  df_ocorrencias_tratado.csv (≈ 2024-12-31), not from today's clock — the
-  underlying dataset only goes up to 2024-12.
-- The official shapefile has 8 polygons; the camera CSV references 9 named
-  areas. The missing one (Bangu) gets a synthetic bbox polygon built from its
-  camera coordinates.
-- Executive Summary / Dinâmica Criminal / Plano de Ação are template-generated
-  here, parameterised by the real numbers. In production these would be the
-  output of an LLM prompt over the same data.
+- `main()` virou `async def build(emit)` — recebe um callback assíncrono que
+  publica eventos (`PhaseEvent`, `LlmEvent`, `LogEvent`, ...) num stream
+  consumido pelos clientes SSE em tempo real.
+- Não escreve mais `project/frontend/public/data/real.json`. Devolve o
+  payload dict — o `JobManager` guarda em memória e serve via
+  `GET /api/build/result`.
+- Chamadas Claude (síncronas no SDK) rodam em `asyncio.to_thread` pra não
+  bloquear o event loop e permitir que os eventos sigam fluindo.
+
+Notas do dataset original (inalteradas):
+- "Últimos 30 / 90 dias" é computado a partir da data mais recente em
+  `df_ocorrencias_tratado.csv` (≈ 2024-12-31), não do relógio de hoje.
+- O shapefile tem 8 polígonos; o CSV de câmeras referencia 9 áreas nomeadas.
+  A faltante (Bangu) recebe polígono sintético baseado nos pontos de câmera.
 """
 
 from __future__ import annotations
 
+import asyncio
 import csv
-import json
 import os
 import re
 import sys
 import zipfile
 from collections import Counter, defaultdict
 from datetime import datetime, timedelta
-from pathlib import Path
-from xml.etree import ElementTree as ET
+from typing import Any, Awaitable, Callable
 
 import shapefile  # pyshp
-from shapely.geometry import Point, Polygon, MultiPolygon, box
+from shapely.geometry import Point, Polygon, box
 from shapely.prepared import prep
 
-# LLM synthesis (Claude Opus 4.7) — optional, gated by COMPSTAT_LLM env var.
-# Falls back silently to the template generators below when disabled or on error.
-try:
-    import llm_synthesis
-except ImportError:
-    llm_synthesis = None
+from . import llm_synthesis
+from .events import DoneEvent, ErrorEvent, Event, LlmEvent, LogEvent, PhaseEvent
+from .paths import (
+    CAMERAS_CSV,
+    DISQUE_CSV,
+    FATORES_CSV,
+    OCORRENCIAS_CSV,
+    RELINTS,
+    SHAPEFILE,
+)
+
+EmitFn = Callable[[Event], Awaitable[None]]
 
 # ---------------------------------------------------------------------------
-# Paths
+# Friendly area names + RELINT mapping (inalterado da versão script)
 # ---------------------------------------------------------------------------
-
-ROOT = Path(__file__).resolve().parent.parent
-DADOS = ROOT / "dados"
-RELINTS = ROOT / "relints"
-SHAPES = ROOT / "sh_area_forca"
-OUT = ROOT / "project" / "frontend" / "public" / "data" / "real.json"
-
-# ---------------------------------------------------------------------------
-# Friendly area names + RELINT mapping
-# ---------------------------------------------------------------------------
-
-# The shapefile only stores numeric IDs. Mapping fid → friendly name is done
-# by matching the polygon bbox against the bbox of cameras grouped by name.
-# Cameras drive the canonical name set (9 areas).
 
 AREA_SHORT = {
     "Bangu: Calçadão - Bangu Shopping": "Bangu",
@@ -85,7 +75,6 @@ AREA_ID = {
     "Rua Lauro Müller – Avenida General Severiano – Avenida Venceslau Brás": "lauro-muller",
 }
 
-# AISP / bairro tags are static metadata for the area header
 AREA_META = {
     "metro-botafogo":      {"aisp": "AISP 6",  "bairro": "Botafogo"},
     "presidente-vargas":   {"aisp": "AISP 5",  "bairro": "Centro"},
@@ -103,13 +92,12 @@ RELINT_AREA = {
     "RI_011": "metro-botafogo",
     "RI_012": "jardim-alah",
     "RI_013": "campo-grande",
-    "RI_014": "metro-botafogo",      # Rio Sul → entorno Botafogo, sem polígono dedicado
+    "RI_014": "metro-botafogo",
     "RI_015": "praia-botafogo",
     "RI_016": "sfx-afonso-pena",
     "RI_017": "presidente-vargas",
 }
 
-# Friendly orgao labels — the data is inconsistent ("Rio Luz" vs "RioLuz" etc.)
 ORGAO_NORMALIZE = {
     "RIO LUZ": "RioLuz", "RIOLUZ": "RioLuz", "RIO-LUZ": "RioLuz",
     "COMLURB": "Comlurb",
@@ -120,6 +108,9 @@ ORGAO_NORMALIZE = {
     "GM-RIO": "GM-Rio", "GMRIO": "GM-Rio", "GUARDA MUNICIPAL": "GM-Rio",
     "SMTR": "SMTR",
 }
+
+TOTAL_AREAS = 9
+TOTAL_LLM_CALLS = TOTAL_AREAS * 3  # resumo + dinâmica + plano por área
 
 
 def normalize_orgao(raw: str) -> str | None:
@@ -134,26 +125,19 @@ def normalize_orgao(raw: str) -> str | None:
 # ---------------------------------------------------------------------------
 
 def load_polygons() -> dict[str, dict]:
-    """
-    Return { name: { 'polygon': Polygon, 'coords': [(lat,lng),...], 'center': (lat,lng) } }
-    Maps shapefile fids to canonical names via bbox overlap with camera bboxes,
-    then adds a synthetic polygon for any named area missing from the shapefile.
-    """
     cam_bbox = camera_bboxes()
-    sf = shapefile.Reader(str(SHAPES / "areas_forca_municipal.shp"))
+    sf = shapefile.Reader(str(SHAPEFILE))
 
     used = set()
     result: dict[str, dict] = {}
 
     for sr in sf.shapeRecords():
         pts = sr.shape.points
-        # The shapefile stores (lng, lat). Shapely Polygon expects (x, y) = (lng, lat).
         poly = Polygon(pts)
         if not poly.is_valid:
             poly = poly.buffer(0)
-        bbox = poly.bounds  # (minx, miny, maxx, maxy) = (minlng, minlat, maxlng, maxlat)
+        bbox = poly.bounds
 
-        # Match by bbox overlap
         best, best_area = None, 0
         for name, (minlng, minlat, maxlng, maxlat) in cam_bbox.items():
             if name in used:
@@ -173,11 +157,9 @@ def load_polygons() -> dict[str, dict]:
         cy = sum(p[1] for p in coords_latlng) / len(coords_latlng)
         result[best] = {"polygon": poly, "coords": coords_latlng, "center": (cx, cy), "synthetic": False}
 
-    # Synthetic polygons for any area without a shapefile feature
     for name, (minlng, minlat, maxlng, maxlat) in cam_bbox.items():
         if name in result:
             continue
-        # Pad bbox a bit so it covers the area visually
         pad_lng = (maxlng - minlng) * 0.3 or 0.001
         pad_lat = (maxlat - minlat) * 0.3 or 0.001
         poly = box(minlng - pad_lng, minlat - pad_lat, maxlng + pad_lng, maxlat + pad_lat)
@@ -193,7 +175,7 @@ def load_polygons() -> dict[str, dict]:
 def camera_bboxes() -> dict[str, tuple]:
     bb = defaultdict(lambda: [float("inf"), float("inf"), float("-inf"), float("-inf")])
     pat = re.compile(r"POINT \(([-\d.]+) ([-\d.]+)\)")
-    with open(DADOS / "cameras_areas_fm.csv", encoding="utf-8") as f:
+    with open(CAMERAS_CSV, encoding="utf-8") as f:
         for row in csv.DictReader(f):
             m = pat.match(row["geometry"])
             if not m:
@@ -208,10 +190,9 @@ def camera_bboxes() -> dict[str, tuple]:
 
 
 def load_cameras(areas: dict[str, dict]) -> dict[str, list]:
-    """Camera points per area, directly from the cameras CSV (carries the area name)."""
     out: dict[str, list] = {name: [] for name in areas}
     pat = re.compile(r"POINT \(([-\d.]+) ([-\d.]+)\)")
-    with open(DADOS / "cameras_areas_fm.csv", encoding="utf-8") as f:
+    with open(CAMERAS_CSV, encoding="utf-8") as f:
         for row in csv.DictReader(f):
             m = pat.match(row["geometry"])
             if not m:
@@ -228,13 +209,8 @@ def load_cameras(areas: dict[str, dict]) -> dict[str, list]:
 # ---------------------------------------------------------------------------
 
 def load_ocorrencias(areas: dict[str, dict]):
-    """
-    Returns (max_date, per_area_dict) where each entry has:
-      points_90d, count_30d, count_prev_30d, by_day, by_hour, by_delito
-    """
-    # First pass: discover max_date among parseable rows
     max_date = None
-    with open(DADOS / "df_ocorrencias_tratado - Extração 1 .csv", encoding="utf-8") as f:
+    with open(OCORRENCIAS_CSV, encoding="utf-8") as f:
         for row in csv.DictReader(f):
             if not row["data"]:
                 continue
@@ -242,7 +218,6 @@ def load_ocorrencias(areas: dict[str, dict]):
                 d = datetime.strptime(row["data"], "%d/%m/%Y")
             except ValueError:
                 continue
-            # Ignore the obvious 1924/1972 noise
             if d.year < 2024:
                 continue
             if max_date is None or d > max_date:
@@ -250,7 +225,6 @@ def load_ocorrencias(areas: dict[str, dict]):
     if max_date is None:
         raise RuntimeError("No parseable dates in ocorrências CSV")
 
-    # Treat the day after max_date as 'today' so 'last 30d' includes max_date
     today = max_date + timedelta(days=1)
     win_30 = today - timedelta(days=30)
     win_60 = today - timedelta(days=60)
@@ -258,12 +232,12 @@ def load_ocorrencias(areas: dict[str, dict]):
 
     prepared = {n: prep(a["polygon"]) for n, a in areas.items()}
     per_area = {n: {
-        "points_90d": [],     # (lat, lng, weight)
+        "points_90d": [],
         "count_30d": 0,
-        "count_prev_30d": 0,  # 31–60 days ago
+        "count_prev_30d": 0,
         "by_day_count": Counter(),
         "by_hour_count": Counter(),
-        "by_day_delito": defaultdict(Counter),  # day → {Roubo: n, Furto: n}
+        "by_day_delito": defaultdict(Counter),
         "by_hour_delito": defaultdict(Counter),
         "delitos": Counter(),
     } for n in areas}
@@ -273,7 +247,7 @@ def load_ocorrencias(areas: dict[str, dict]):
     n_total = 0
     n_geo = 0
     n_window = 0
-    with open(DADOS / "df_ocorrencias_tratado - Extração 1 .csv", encoding="utf-8") as f:
+    with open(OCORRENCIAS_CSV, encoding="utf-8") as f:
         for row in csv.DictReader(f):
             n_total += 1
             if not row["data"] or not row["latitude"] or not row["longitude"]:
@@ -288,7 +262,6 @@ def load_ocorrencias(areas: dict[str, dict]):
                 continue
             n_geo += 1
 
-            # Only run point-in-polygon for points roughly in Rio
             if not (-23.1 < lat < -22.7 and -43.8 < lng < -43.0):
                 continue
 
@@ -298,7 +271,6 @@ def load_ocorrencias(areas: dict[str, dict]):
                     continue
                 a = per_area[name]
                 delito = (row["desc_delito"] or "").strip()
-                # Crime taxonomy collapsed to {Roubo, Furto} for the chart
                 category = "Roubo" if delito.lower().startswith("roubo") else "Furto"
 
                 if win_90 <= d < today:
@@ -307,7 +279,7 @@ def load_ocorrencias(areas: dict[str, dict]):
                 if win_30 <= d < today:
                     a["count_30d"] += 1
                     a["delitos"][delito] += 1
-                    weekday_idx = d.weekday()  # 0=Mon
+                    weekday_idx = d.weekday()
                     a["by_day_count"][DAYS_PT[weekday_idx]] += 1
                     a["by_day_delito"][DAYS_PT[weekday_idx]][category] += 1
                     if row["hora"]:
@@ -319,7 +291,7 @@ def load_ocorrencias(areas: dict[str, dict]):
                             pass
                 elif win_60 <= d < win_30:
                     a["count_prev_30d"] += 1
-                break  # point already attributed to one area
+                break
 
     print(f"  ocorrências: total={n_total}, geocoded≥2024={n_geo}, no polígono(90d)={n_window}",
           file=sys.stderr)
@@ -331,21 +303,20 @@ def load_ocorrencias(areas: dict[str, dict]):
 # ---------------------------------------------------------------------------
 
 def load_denuncias(areas: dict[str, dict], today: datetime):
-    """Returns per_area_dict with counts (90d) and a sample of relatos for the Dynamics card."""
     win_90 = today - timedelta(days=90)
     prepared = {n: prep(a["polygon"]) for n, a in areas.items()}
     per_area = {n: {
         "count_90d": 0,
         "relatos_sample": [],
         "tipos": Counter(),
-        "motos": 0,   # heuristic: relato cites moto/motocicleta
-        "pe": 0,      # heuristic: relato cites a pé
+        "motos": 0,
+        "pe": 0,
     } for n in areas}
 
     MOTO_RE = re.compile(r"\b(moto|motocicleta)s?\b", re.I)
     PE_RE = re.compile(r"\ba p[éê]\b", re.I)
 
-    with open(DADOS / "disk_denuncia.csv", encoding="latin-1") as f:
+    with open(DISQUE_CSV, encoding="latin-1") as f:
         for row in csv.DictReader(f, delimiter=";"):
             if not row.get("latitude") or not row.get("longitude"):
                 continue
@@ -383,10 +354,9 @@ def load_denuncias(areas: dict[str, dict], today: datetime):
 # ---------------------------------------------------------------------------
 
 def load_fatores(areas: dict[str, dict]):
-    """Returns per_area list of urban factor points (only tipo_ocorrencia_ativo=TRUE)."""
     prepared = {n: prep(a["polygon"]) for n, a in areas.items()}
     per_area = {n: [] for n in areas}
-    with open(DADOS / "fatores_urbanos.csv", encoding="utf-8") as f:
+    with open(FATORES_CSV, encoding="utf-8") as f:
         for row in csv.DictReader(f):
             if row["tipo_ocorrencia_ativo"] != "TRUE":
                 continue
@@ -432,7 +402,6 @@ def _category_for(tipo: str) -> str:
 # ---------------------------------------------------------------------------
 
 def load_relints():
-    """Map area_id → list of {file, title, text}."""
     out = defaultdict(list)
     for path in sorted(RELINTS.glob("*.docx")):
         m = re.search(r"(RI_\d+)", path.name)
@@ -446,7 +415,6 @@ def load_relints():
                 xml = d.read().decode("utf-8")
         text = re.sub(r"<[^>]+>", " ", xml)
         text = re.sub(r"\s+", " ", text).strip()
-        # Title heuristic: between the file marker and 'A presente análise'
         out[area_id].append({"file": path.name, "text": text})
     return out
 
@@ -456,17 +424,10 @@ def load_relints():
 # ---------------------------------------------------------------------------
 
 def detect_coincidences(area_name, points_90d, factors, cameras, peak_label, peak_days, area_id):
-    """
-    Lightweight hotspot → coincidence:
-      1. Grid-bin the 90d points into ~50m cells
-      2. Top cells = hotspots
-      3. Within 80m of each hotspot, find active factors
-      4. Score = z(crime count) + z(factor count) clipped to [50, 100]
-    """
     if not points_90d:
         return []
 
-    CELL = 0.0005  # ~ 50m in lat/lng
+    CELL = 0.0005
     cells = Counter()
     for lat, lng in points_90d:
         cells[(round(lat / CELL), round(lng / CELL))] += 1
@@ -487,17 +448,13 @@ def detect_coincidences(area_name, points_90d, factors, cameras, peak_label, pea
             f for f in factors
             if abs(f["lat"] - clat) < 0.0008 and abs(f["lng"] - clng) < 0.0008
         ]
-        # Combine to one descriptive label
         if not nearby_factors:
             continue
-        # Score
         score = min(99, 55 + n * 5 + len(nearby_factors) * 3)
         if score < 65:
             continue
-        # Build factor label (top 2)
         factor_counts = Counter(f["type"] for f in nearby_factors)
         factor_label = " + ".join([t for t, _ in factor_counts.most_common(2)])
-        # Operational gap heuristic
         has_camera = any(abs(c[0] - clat) < 0.0008 and abs(c[1] - clng) < 0.0008
                          for c in cam_set)
         op_gap = ("Hotspot sem câmera de monitoramento; "
@@ -528,6 +485,7 @@ def detect_coincidences(area_name, points_90d, factors, cameras, peak_label, pea
 
 DAYS_PT_ORDER = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
 
+
 def temporal_payload(by_day_delito, by_hour_delito):
     by_day = []
     for d in DAYS_PT_ORDER:
@@ -551,7 +509,6 @@ def detect_peak(by_hour_delito, by_day_delito):
                    for h in range(24)}
     if not any(hour_totals.values()):
         return "—", "—"
-    # 3-hour rolling window for peak detection
     best_start, best_sum = 0, 0
     for h in range(22):
         s = hour_totals[h] + hour_totals[h + 1] + hour_totals[h + 2]
@@ -580,7 +537,7 @@ def risk_for(count_30d, count_prev):
 
 
 # ---------------------------------------------------------------------------
-# Text generators (template-based — would be an LLM in production)
+# Template fallbacks (inalterados)
 # ---------------------------------------------------------------------------
 
 def gen_executive_summary(name, count_30d, var_pct, factors, peak_hours, peak_days,
@@ -656,68 +613,7 @@ def gen_dynamics(name, denuncia_data, ocorrencias_count_30d, relints):
     }
 
 
-def _use_llm() -> bool:
-    return (
-        llm_synthesis is not None
-        and llm_synthesis.ENABLED
-        and os.environ.get("ANTHROPIC_API_KEY")
-    )
-
-
-def llm_or_template_executive_summary(name, count_30d, var_pct, factors,
-                                      peak_hours, peak_days, coincidences,
-                                      cameras_count, denuncias_count, relints_count):
-    if _use_llm():
-        try:
-            print(f"    [LLM] resumo executivo · {name}", file=sys.stderr)
-            return llm_synthesis.synthesize_executive_summary(
-                area_name=name,
-                count_30d=count_30d, var_pct=var_pct, factors=factors,
-                peak_hours=peak_hours, peak_days=peak_days,
-                coincidences=coincidences, cameras_count=cameras_count,
-                denuncias_count=denuncias_count, relints_count=relints_count,
-            )
-        except Exception as e:
-            print(f"    [LLM fallback resumo: {e}]", file=sys.stderr)
-    return gen_executive_summary(name, count_30d, var_pct, factors,
-                                 peak_hours, peak_days, coincidences, cameras_count)
-
-
-def llm_or_template_dynamics(name, de, count_30d, rels, factors, peak_hours, peak_days):
-    if _use_llm():
-        try:
-            top_factors = Counter(f["type"] for f in factors).most_common(5)
-            print(f"    [LLM] dinâmica criminal · {name}", file=sys.stderr)
-            return llm_synthesis.synthesize_dynamics(
-                area_name=name,
-                denuncia_data=de,
-                ocorrencias_count_30d=count_30d,
-                relints=rels,
-                top_factors=top_factors,
-                peak_hours=peak_hours,
-                peak_days=peak_days,
-            )
-        except Exception as e:
-            print(f"    [LLM fallback dinâmica: {e}]", file=sys.stderr)
-    return gen_dynamics(name, de, count_30d, rels)
-
-
-def llm_or_template_action_plan(name, coincidences, factors):
-    if _use_llm():
-        try:
-            print(f"    [LLM] plano de ação · {name}", file=sys.stderr)
-            return llm_synthesis.synthesize_action_plan(
-                area_name=name,
-                coincidences=coincidences,
-                factors=factors,
-            )
-        except Exception as e:
-            print(f"    [LLM fallback plano: {e}]", file=sys.stderr)
-    return gen_action_plan(coincidences, factors)
-
-
 def gen_action_plan(coincidences, factors):
-    """Generate one action per high-risk coincidence + factor-based remediations per orgao."""
     actions = []
     for c in coincidences[:3]:
         actions.append({
@@ -727,7 +623,6 @@ def gen_action_plan(coincidences, factors):
             "priority": "alta" if c["risk"] >= 85 else "média",
         })
 
-    # Factor remediation grouped by orgao
     factor_by_orgao = defaultdict(Counter)
     for f in factors:
         factor_by_orgao[f["orgao"]][f["type"]] += 1
@@ -746,36 +641,92 @@ def gen_action_plan(coincidences, factors):
     return actions[:10]
 
 
+def _use_llm() -> bool:
+    return llm_synthesis.ENABLED and bool(os.environ.get("ANTHROPIC_API_KEY"))
+
+
 # ---------------------------------------------------------------------------
-# Main
+# LLM wrappers — agora `async` e emitem LlmEvent ANTES de chamar
 # ---------------------------------------------------------------------------
 
-def main():
-    OUT.parent.mkdir(parents=True, exist_ok=True)
+async def _llm_exec_summary(emit: EmitFn, call_idx: int, name: str, args: dict) -> list:
+    await emit(LlmEvent(section="resumo executivo", area=name,
+                         index=call_idx, total=TOTAL_LLM_CALLS))
+    if _use_llm():
+        try:
+            return await asyncio.to_thread(
+                llm_synthesis.synthesize_executive_summary, **args
+            )
+        except Exception as e:
+            await emit(LogEvent(line=f"    [LLM fallback resumo {name}: {e}]"))
+    return gen_executive_summary(
+        name, args["count_30d"], args["var_pct"], args["factors"],
+        args["peak_hours"], args["peak_days"],
+        args["coincidences"], args["cameras_count"],
+    )
 
-    print("==> Loading polygons...", file=sys.stderr)
-    areas = load_polygons()
-    print(f"    {len(areas)} áreas mapeadas", file=sys.stderr)
 
-    print("==> Loading cameras...", file=sys.stderr)
-    cameras = load_cameras(areas)
-    print("    " + ", ".join(f"{AREA_SHORT[n]}={len(v)}" for n, v in cameras.items()), file=sys.stderr)
+async def _llm_dynamics(emit: EmitFn, call_idx: int, name: str, args: dict, fallback_args: dict) -> dict:
+    await emit(LlmEvent(section="dinâmica criminal", area=name,
+                         index=call_idx, total=TOTAL_LLM_CALLS))
+    if _use_llm():
+        try:
+            return await asyncio.to_thread(
+                llm_synthesis.synthesize_dynamics, **args
+            )
+        except Exception as e:
+            await emit(LogEvent(line=f"    [LLM fallback dinâmica {name}: {e}]"))
+    return gen_dynamics(name, fallback_args["de"], fallback_args["count_30d"], fallback_args["rels"])
 
-    print("==> Loading ocorrências (last 90d)...", file=sys.stderr)
-    today, ocorrencias = load_ocorrencias(areas)
-    print(f"    reference 'today' = {today.date()}", file=sys.stderr)
 
-    print("==> Loading disque denúncia (last 90d)...", file=sys.stderr)
-    denuncias = load_denuncias(areas, today)
+async def _llm_action_plan(emit: EmitFn, call_idx: int, name: str, args: dict, fallback_args: dict) -> list:
+    await emit(LlmEvent(section="plano de ação", area=name,
+                         index=call_idx, total=TOTAL_LLM_CALLS))
+    if _use_llm():
+        try:
+            return await asyncio.to_thread(
+                llm_synthesis.synthesize_action_plan, **args
+            )
+        except Exception as e:
+            await emit(LogEvent(line=f"    [LLM fallback plano {name}: {e}]"))
+    return gen_action_plan(fallback_args["coincidences"], fallback_args["factors"])
 
-    print("==> Loading fatores urbanos (ativos)...", file=sys.stderr)
-    fatores = load_fatores(areas)
 
-    print("==> Loading RELINTs...", file=sys.stderr)
-    relints = load_relints()
+# ---------------------------------------------------------------------------
+# Entrypoint async
+# ---------------------------------------------------------------------------
 
-    # Assemble output
-    out_areas = []
+async def build(emit: EmitFn) -> dict[str, Any]:
+    """Executa o ETL inteiro. Emite eventos via `emit` e devolve o payload final."""
+    started = datetime.now()
+
+    await emit(PhaseEvent(phase="load-polygons"))
+    areas = await asyncio.to_thread(load_polygons)
+    await emit(LogEvent(line=f"==> {len(areas)} áreas mapeadas"))
+
+    await emit(PhaseEvent(phase="load-cameras"))
+    cameras = await asyncio.to_thread(load_cameras, areas)
+    await emit(LogEvent(
+        line="    " + ", ".join(f"{AREA_SHORT[n]}={len(v)}" for n, v in cameras.items())
+    ))
+
+    await emit(PhaseEvent(phase="load-ocorrencias"))
+    today, ocorrencias = await asyncio.to_thread(load_ocorrencias, areas)
+    await emit(LogEvent(line=f"==> reference 'today' = {today.date()}"))
+
+    await emit(PhaseEvent(phase="load-denuncias"))
+    denuncias = await asyncio.to_thread(load_denuncias, areas, today)
+
+    await emit(PhaseEvent(phase="load-fatores"))
+    fatores = await asyncio.to_thread(load_fatores, areas)
+
+    await emit(PhaseEvent(phase="load-relints"))
+    relints = await asyncio.to_thread(load_relints)
+
+    await emit(PhaseEvent(phase="llm"))
+
+    out_areas: list[dict] = []
+    call_idx = 0
     for name, geo in areas.items():
         area_id = AREA_ID[name]
         meta = AREA_META.get(area_id, {"aisp": "—", "bairro": "—"})
@@ -803,6 +754,35 @@ def main():
 
         crime_pts = [[lat, lng, 0.6] for lat, lng in oc["points_90d"][:600]]
 
+        # 3 chamadas LLM por área
+        call_idx += 1
+        exec_summary = await _llm_exec_summary(emit, call_idx, name, dict(
+            area_name=name, count_30d=oc["count_30d"], var_pct=var_pct,
+            factors=fa, peak_hours=peak_hours, peak_days=peak_days,
+            coincidences=coincidences, cameras_count=len(cams),
+            denuncias_count=de["count_90d"], relints_count=len(rels),
+        ))
+
+        call_idx += 1
+        top_factors = Counter(f["type"] for f in fa).most_common(5)
+        dynamics = await _llm_dynamics(
+            emit, call_idx, name,
+            args=dict(
+                area_name=name, denuncia_data=de,
+                ocorrencias_count_30d=oc["count_30d"],
+                relints=rels, top_factors=top_factors,
+                peak_hours=peak_hours, peak_days=peak_days,
+            ),
+            fallback_args=dict(de=de, count_30d=oc["count_30d"], rels=rels),
+        )
+
+        call_idx += 1
+        action_plan = await _llm_action_plan(
+            emit, call_idx, name,
+            args=dict(area_name=name, coincidences=coincidences, factors=fa),
+            fallback_args=dict(coincidences=coincidences, factors=fa),
+        )
+
         out_areas.append({
             "id": area_id,
             "name": name,
@@ -827,23 +807,17 @@ def main():
             "temporal": {"byDay": by_day, "byHour": by_hour},
             "peakHours": peak_hours,
             "peakDays": peak_days,
-            "executiveSummary": llm_or_template_executive_summary(
-                name, oc["count_30d"], var_pct, fa, peak_hours, peak_days,
-                coincidences, len(cams), de["count_90d"], len(rels),
-            ),
-            "dynamics": llm_or_template_dynamics(
-                name, de, oc["count_30d"], rels, fa, peak_hours, peak_days,
-            ),
+            "executiveSummary": exec_summary,
+            "dynamics": dynamics,
             "coincidences": coincidences,
-            "actionPlan": llm_or_template_action_plan(name, coincidences, fa),
+            "actionPlan": action_plan,
         })
 
-    # Stable ordering: by risk desc then by ocorrências desc
     risk_rank = {"critical": 0, "high": 1, "medium": 2, "low": 3}
     out_areas.sort(key=lambda a: (risk_rank[a["risk"]], -a["kpis"]["ocorrencias_30d"]))
 
     payload = {
-        "generatedAt": datetime.now().isoformat(timespec="seconds"),
+        "generatedAt": started.isoformat(timespec="seconds"),
         "referenceDate": today.date().isoformat(),
         "windowDays": 90,
         "dataSources": [
@@ -856,16 +830,28 @@ def main():
         "areas": out_areas,
     }
 
-    OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2))
-    size_kb = OUT.stat().st_size / 1024
-    print(f"==> Wrote {OUT} ({size_kb:.0f} KB)", file=sys.stderr)
-    for a in out_areas:
-        print(f"    {a['shortName']:35s} ocor30d={a['kpis']['ocorrencias_30d']:4d}  "
-              f"factors={a['kpis']['fatores_urbanos']:3d}  "
-              f"denúncias={a['kpis']['denuncias']:3d}  "
-              f"coin={a['kpis']['coincidencias']}  "
-              f"risk={a['risk']}", file=sys.stderr)
+    await emit(PhaseEvent(phase="wrote"))
+    duration = (datetime.now() - started).total_seconds()
+    await emit(DoneEvent(
+        duration_seconds=round(duration, 2),
+        reference_date=today.date().isoformat(),
+        area_count=len(out_areas),
+    ))
+    return payload
+
+
+# ---------------------------------------------------------------------------
+# CLI helper para smoke-test offline
+# ---------------------------------------------------------------------------
+
+async def _cli_main():
+    async def _emit(ev: Event):
+        print(f"[{ev.type}] {ev.model_dump_json()}", file=sys.stderr)
+
+    payload = await build(_emit)
+    print(f"==> payload com {len(payload['areas'])} áreas, "
+          f"reference_date={payload['referenceDate']}", file=sys.stderr)
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(_cli_main())

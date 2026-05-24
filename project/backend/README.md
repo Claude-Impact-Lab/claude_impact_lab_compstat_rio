@@ -1,4 +1,18 @@
-# CompStat Rio — Backend (Crawler de Menções)
+# CompStat Rio — Backend (FastAPI)
+
+Dois pipelines convivendo em uma única API FastAPI:
+
+1. **Crawler de menções** (`/api/crawler/run`) — coleta G1 Rio + O Dia,
+   classifica com **Claude Haiku 4.5** e devolve alertas estruturados.
+2. **ETL CompStat** (`/api/build/{run,stream,status,result}`) — cruza
+   ocorrências, Disque Denúncia, RELINTs, fatores urbanos e polígonos FM,
+   sintetiza Resumo Executivo / Dinâmica Criminal / Plano de Ação com
+   **Claude Opus 4.7** (27 chamadas — 9 áreas × 3 seções) e expõe o progresso
+   via **SSE** (`text/event-stream`) para o frontend renderizar a barra de
+   processamento ao vivo. Migrado do antigo `scripts/build_data.py` que
+   rodava como subprocesso do Vite.
+
+## Crawler — alertas
 
 Coleta menções públicas relacionadas à **Força Municipal** e a relatos de crime
 no território do Rio em duas fontes — G1 Rio (RSS) e O Dia (scrape HTML) —
@@ -25,11 +39,17 @@ horário, padrão de modus operandi, tipo de crime, e um score de confiança.
 
 ## Instalação
 
-A venv já existe na raiz do repo. Do diretório raiz:
+Do diretório raiz do repo. Crie a venv (se ainda não existir) e instale as
+dependências:
 
 ```bash
+python3.13 -m venv .venv
+.venv/bin/pip install --upgrade pip
 .venv/bin/pip install -r project/backend/requirements.txt
 ```
+
+> Requer Python 3.13. O `.venv/` está no `.gitignore`, então cada clone precisa
+> criar a sua localmente.
 
 ## Configuração
 
@@ -51,10 +71,32 @@ cd project/backend
 
 Endpoints:
 
-| Método | Path                 | O que faz                                            |
-|:------:|----------------------|------------------------------------------------------|
-| GET    | `/health`            | Sanity check.                                         |
-| POST   | `/api/crawler/run`   | Dispara o pipeline; devolve `CrawlerRunResponse`.    |
+| Método | Path                  | O que faz                                                                   |
+|:------:|-----------------------|-----------------------------------------------------------------------------|
+| GET    | `/health`             | Sanity check.                                                               |
+| POST   | `/api/crawler/run`    | Dispara o crawler; devolve `CrawlerRunResponse`.                            |
+| POST   | `/api/build/run`      | Inicia o ETL CompStat. 202 com `started_at`; 409 se já roda; 400 sem chave. |
+| GET    | `/api/build/stream`   | SSE: eventos `phase` / `llm` / `log` / `done` / `error` (heartbeat 15s).    |
+| GET    | `/api/build/status`   | Snapshot textual do job atual (polling-fallback para clientes sem SSE).     |
+| GET    | `/api/build/result`   | Payload completo do último ETL bem-sucedido (404 se nunca rodou).           |
+
+### Fluxo do ETL pelo frontend
+
+```
+UploadScreen ──POST /api/build/run────────────────────► JobManager (singleton)
+            │                                                  │
+            ├─new EventSource('/api/build/stream')             │ asyncio.Task
+            │   event: phase  (load-polygons, …, llm, wrote)   │
+            │   event: llm    {area, section, index/27}        │
+            │   event: log    (linhas auxiliares)              │
+            │   event: done   ─────►  GET /api/build/result ◄──┴── payload em memória
+            └─renderiza ProcessingOverlay com calls/27 em tempo real
+```
+
+Eventos do job atual ficam num ring buffer no `JobManager`; se o `EventSource`
+conecta depois do `POST /run`, recebe replay antes de entrar em tempo real.
+Sem persistência: ao restart do uvicorn, o último payload se perde — basta
+clicar **Usar dados reais** de novo no front.
 
 ## Estrutura do Alert
 

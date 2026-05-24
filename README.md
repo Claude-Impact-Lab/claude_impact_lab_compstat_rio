@@ -35,25 +35,25 @@ claude_impact_lab_compstat_rio/
 │   ├── disk_denuncia.csv                                         # Disk Denúncia
 │   ├── fatores_urbanos.csv                                       # Fatores ambientais/urbanos
 │   ├── Dicionário de dados.xlsx                                  # Dicionário de todos os datasets
-│   └── outros dados/                                             # Dados complementares
-│       ├── CPSR_2020_2022_2024.xlsx                              # Censo de Pessoas em Situação de Rua
-│       └── dominio_territorial - Extração 1.csv                  # Domínio territorial (facções)
-├── relints/                                                      # Relatórios de Inteligência (RELINTs)
-│   ├── RI_010_2026_Rodoviaria_Terminal_Gentileza.docx
-│   ├── RI_011_2026_Metro_Botafogo_Sao_Clemente.docx
-│   ├── RI_012_2026_Jardim_de_Alah.docx
-│   ├── RI_013_2026_Campo_Grande_Estacao_Calcadao.docx
-│   ├── RI_014_2026_Rio_Sul.docx
-│   ├── RI_015_2026_Praia_Botafogo_Marques_Abrantes.docx
-│   ├── RI_016_2026_Estacoes_SFX_Afonso_Pena.docx
-│   └── RI_017_2026_Presidente_Vargas_Campo_Santana.docx
-├── sh_area_forca/                                                # Shapefiles das áreas da Força Municipal
-│   ├── areas_forca_municipal.shp
-│   ├── areas_forca_municipal.shx
-│   ├── areas_forca_municipal.dbf
-│   ├── areas_forca_municipal.prj
-│   ├── areas_forca_municipal.cpg
-│   └── areas_forca_municipal.qmd
+│   ├── outros dados/                                             # Dados complementares
+│   │   ├── CPSR_2020_2022_2024.xlsx                              # Censo de Pessoas em Situação de Rua
+│   │   └── dominio_territorial - Extração 1.csv                  # Domínio territorial (facções)
+│   ├── relints/                                                  # Relatórios de Inteligência (RELINTs)
+│   │   ├── RI_010_2026_Rodoviaria_Terminal_Gentileza.docx
+│   │   ├── RI_011_2026_Metro_Botafogo_Sao_Clemente.docx
+│   │   ├── RI_012_2026_Jardim_de_Alah.docx
+│   │   ├── RI_013_2026_Campo_Grande_Estacao_Calcadao.docx
+│   │   ├── RI_014_2026_Rio_Sul.docx
+│   │   ├── RI_015_2026_Praia_Botafogo_Marques_Abrantes.docx
+│   │   ├── RI_016_2026_Estacoes_SFX_Afonso_Pena.docx
+│   │   └── RI_017_2026_Presidente_Vargas_Campo_Santana.docx
+│   └── sh_area_forca/                                            # Shapefiles das áreas da Força Municipal
+│       ├── areas_forca_municipal.shp
+│       ├── areas_forca_municipal.shx
+│       ├── areas_forca_municipal.dbf
+│       ├── areas_forca_municipal.prj
+│       ├── areas_forca_municipal.cpg
+│       └── areas_forca_municipal.qmd
 ├── Briefing_Hackathon_Desenvolvedores_CompStat.pdf               # Briefing técnico do desafio
 ```
 ---
@@ -149,7 +149,7 @@ Planilha consolidada com a descrição de todas as variáveis (colunas) de cada 
 
 ## 📄 Relatórios de Inteligência (RelInts)
 
-**Pasta:** `relints/`
+**Pasta:** `dados/relints/`
 
 Contém PDFs que simulam relatórios de inteligência reais (RELINTs). Esses documentos servem como referência do formato e conteúdo esperado em um relatório de inteligência da FM, permitindo que as soluções desenvolvidas no hackathon se orientem por esse padrão. Os RELINTs são uma das principais fontes qualitativas para desenvolvimento da dinâmica criminal.
 

@@ -4,13 +4,13 @@ Os **Relatórios de Inteligência** (RELINTs) são a camada qualitativa **estrut
 
 ## Localização e formato
 
-- **Diretório:** `relints/`
+- **Diretório:** `dados/relints/`
 - **8 arquivos** `.docx` (Word).
 - ⚠ **Nomes prefixados `Cópia de RI_NNN_...docx`** — apesar do `README.md` listar sem o prefixo. Não confie em listing por nome exato; faça match pelo sufixo (`RI_NNN_<area>.docx`).
 
 ## Mapeamento RI → área FM
 
-Derivado de `scripts/build_data.py` (`RELINT_AREA`):
+Derivado de `project/backend/etl/build_data.py` (`RELINT_AREA`):
 
 | Arquivo | Área canônica |
 |---|---|
@@ -74,7 +74,7 @@ def caminho_relint(area_canonica):
 
     out = []
     for p in prefixos:
-        matches = glob.glob(f"relints/*{p}*.docx")
+        matches = glob.glob(f"dados/relints/*{p}*.docx")
         out.extend(matches)
     return out
 ```

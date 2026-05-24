@@ -10,21 +10,23 @@ React + Vite. Pode rodar com **dados reais** (extraídos de `/dados`, `/relints`
 A partir da raiz do repo:
 
 ```bash
-# 1. Gerar o JSON pré-processado a partir de /dados
+# 1. Subir o backend FastAPI (com .venv ativa e ANTHROPIC_API_KEY no .env)
 python3 -m venv .venv
-source .venv/bin/activate
-pip install pyshp shapely python-docx
-python3 scripts/build_data.py
-# escreve project/frontend/public/data/real.json
+.venv/bin/pip install -r project/backend/requirements.txt
+cd project/backend
+../../.venv/bin/uvicorn main:app --port 8000 --reload
 
-# 2. Subir o frontend
+# 2. Em outro terminal, subir o frontend
 cd project/frontend
 npm install
 npm run dev
 ```
 
-Na tela inicial, clique em **"Usar dados reais do projeto"** — o app carrega
-`/data/real.json` e mostra os números reais agregados por área da FM.
+Na tela inicial, clique em **"Usar dados reais do projeto"** — o app chama
+`POST /api/build/run`, assina `GET /api/build/stream` (SSE) para mostrar o
+progresso ao vivo (27 chamadas LLM = 9 áreas × 3 seções), e ao receber o
+evento `done` faz `GET /api/build/result` pra ingerir o payload. Sem
+arquivo em disco — o backend guarda o último payload em memória.
 
 ### Opção 2 — Só com mock
 
@@ -94,11 +96,14 @@ src/
 │   ├── CoincidencePanel.jsx
 │   ├── ActionPlan.jsx
 │   └── Toast.jsx
-├── styles/
-│   └── index.css
-└── ../public/data/
-    └── real.json                 # Gerado por scripts/build_data.py
+└── styles/
+    └── index.css
 ```
+
+> O antigo `public/data/real.json` foi removido. O frontend agora consome o
+> payload via `GET /api/build/result` (servido em memória pelo backend após
+> o ETL terminar).
+
 
 ## Próximos passos
 

@@ -58,12 +58,13 @@ export default function App() {
   }
 
   /**
-   * Loads the real dataset from /data/real.json (already on disk).
-   * Used when the ETL just finished, or as a quick path for testing.
+   * Carrega o payload final do backend (GET /api/build/result). Chamado
+   * automaticamente quando o stream SSE emite `done`. Substitui o antigo
+   * fetch de /data/real.json — não há mais arquivo em disco.
    */
   const consumeRealJson = async () => {
-    const r = await fetch('/data/real.json', { cache: 'no-store' })
-    if (!r.ok) throw new Error('real.json not found')
+    const r = await fetch('/api/build/result', { cache: 'no-store' })
+    if (!r.ok) throw new Error(`/api/build/result HTTP ${r.status}`)
     const payload = await r.json()
     setAreas(payload.areas)
     setSources(payload.dataSources)
@@ -74,48 +75,99 @@ export default function App() {
   }
 
   /**
-   * On-demand pipeline: hits POST /api/build (the Vite plugin spawns
-   * scripts/build_data.py), then polls GET /api/build until done, then
-   * loads the freshly-written real.json.
+   * Pipeline on-demand: POST /api/build/run para iniciar o ETL no FastAPI
+   * (project/backend/etl/build_data.py), assina o stream SSE em
+   * /api/build/stream para progresso ao vivo, e ao receber `done` busca o
+   * payload em /api/build/result.
    */
   const buildAndLoadReal = async () => {
     setLoading(true)
+    setEtlState({
+      status: 'running', error: null,
+      calls: 0, totalCalls: 27,
+      areaCurrent: null, sectionCurrent: null,
+      phase: 'starting', lines: [],
+      startedAt: Date.now(),
+    })
+
+    let started = false
     try {
-      const startResp = await fetch('/api/build', { method: 'POST' })
-      const startBody = await startResp.json().catch(() => ({}))
+      const startResp = await fetch('/api/build/run', { method: 'POST' })
+      // 409 = job já estava rodando — OK, basta assinar o stream existente.
       if (!startResp.ok && startResp.status !== 409) {
-        const msg = startBody.message || startBody.error || `HTTP ${startResp.status}`
-        setEtlState({ status: 'error', error: msg, lines: [], calls: 0, totalCalls: 27, startedAt: Date.now() })
+        const body = await startResp.json().catch(() => ({}))
+        const msg = body.detail || body.message || `HTTP ${startResp.status}`
+        setEtlState((s) => ({ ...s, status: 'error', error: msg }))
+        setLoading(false)
         return
       }
-
-      setEtlState({ status: 'running', error: null, calls: 0, totalCalls: 27, lines: [], startedAt: Date.now() })
-
-      // Poll every 1.5s
-      while (true) {
-        await new Promise((r) => setTimeout(r, 1500))
-        const sResp = await fetch('/api/build', { cache: 'no-store' })
-        const s = await sResp.json()
-        setEtlState(s)
-        if (s.status === 'done') {
-          await consumeRealJson()
-          setTimeout(() => setEtlState(null), 800)
-          break
-        }
-        if (s.status === 'error') break
-      }
+      started = true
     } catch (e) {
-      setEtlState({
-        status: 'error',
-        error: `Erro de rede: ${e.message}`,
-        lines: [],
-        calls: 0,
-        totalCalls: 27,
-        startedAt: Date.now(),
-      })
-    } finally {
+      setEtlState((s) => ({ ...s, status: 'error', error: `Erro de rede: ${e.message}` }))
       setLoading(false)
+      return
     }
+
+    if (!started) return
+
+    const es = new EventSource('/api/build/stream')
+
+    es.addEventListener('phase', (e) => {
+      const ev = JSON.parse(e.data)
+      setEtlState((s) => ({ ...s, phase: ev.phase }))
+    })
+
+    es.addEventListener('llm', (e) => {
+      const ev = JSON.parse(e.data)
+      setEtlState((s) => ({
+        ...s, phase: 'llm',
+        calls: ev.index, totalCalls: ev.total,
+        areaCurrent: ev.area, sectionCurrent: ev.section,
+      }))
+    })
+
+    es.addEventListener('log', (e) => {
+      const ev = JSON.parse(e.data)
+      setEtlState((s) => ({
+        ...s,
+        lines: [...(s.lines || []).slice(-24), ev.line],
+      }))
+    })
+
+    es.addEventListener('done', async () => {
+      es.close()
+      try {
+        await consumeRealJson()
+        setEtlState((s) => ({ ...s, status: 'done' }))
+        setTimeout(() => setEtlState(null), 800)
+      } catch (err) {
+        setEtlState((s) => ({
+          ...s, status: 'error',
+          error: `ETL terminou mas falhou ao carregar payload: ${err.message}`,
+        }))
+      } finally {
+        setLoading(false)
+      }
+    })
+
+    // `error` aqui pode ser o evento `error` do backend (com data JSON) ou
+    // uma falha de conexão do EventSource (sem data). Tratamos os dois.
+    es.addEventListener('error', (e) => {
+      // EventSource fecha sozinho em rede caída; só sinalizamos se ainda não terminou.
+      const data = e.data ? (() => { try { return JSON.parse(e.data) } catch { return {} } })() : null
+      if (data && data.message) {
+        es.close()
+        setEtlState((s) => ({ ...s, status: 'error', error: data.message }))
+        setLoading(false)
+      } else if (es.readyState === EventSource.CLOSED) {
+        setEtlState((s) =>
+          s?.status === 'done' || s?.status === 'error'
+            ? s
+            : { ...s, status: 'error', error: 'Conexão SSE interrompida' },
+        )
+        setLoading(false)
+      }
+    })
   }
 
   const useMock = () => {
