@@ -20,7 +20,7 @@ export default function Header() {
           <div>
             <h1 className="header-title">CompStat Rio</h1>
             <p className="header-subtitle">
-              Plataforma de Inteligência Criminal — Prefeitura do Rio de Janeiro
+              Plataforma de Inteligência Criminal da Prefeitura do Rio de Janeiro
             </p>
           </div>
         </div>

@@ -146,7 +146,7 @@ export default function UploadScreen({ onContinue, onUseDemo, onUseMock, loading
             </div>
             <div>
               <h1 className="header-title">CompStat Rio</h1>
-              <p className="header-subtitle">Plataforma de Inteligência Criminal — Prefeitura do Rio de Janeiro</p>
+              <p className="header-subtitle">Plataforma de Inteligência Criminal da Prefeitura do Rio de Janeiro</p>
             </div>
           </div>
         </div>
@@ -158,14 +158,14 @@ export default function UploadScreen({ onContinue, onUseDemo, onUseMock, loading
             <Sparkles size={14} />
             Etapa 1 de 2 — Ingestão dos dados
           </div>
-          <h2 className="upload-hero-title">
+          {/* <h2 className="upload-hero-title">
             Carregue as 5 fontes do CompStat Municipal
-          </h2>
+          </h2> */}
           <p className="upload-hero-text">
             A plataforma integra e normaliza automaticamente as fontes do CompStat para cruzar a mancha criminal
             com fatores urbanos e dinâmica criminal, identificar coincidências de alto risco e gerar os
             <strong> Relatórios Analíticos de Área </strong>.
-            Faça o upload dos arquivos abaixo — cada um alimenta um módulo específico da análise.
+            Faça o upload dos arquivos abaixo, cada um alimenta um módulo específico da análise.
           </p>
 
           <div className="upload-progress">
@@ -176,7 +176,7 @@ export default function UploadScreen({ onContinue, onUseDemo, onUseMock, loading
               />
             </div>
             <div className="upload-progress-label">
-              <strong>{requiredDone}/{requiredCount}</strong> fontes obrigatórias carregadas
+              <strong>{requiredDone}/{requiredCount}</strong> fontes carregadas
               {totalDone > requiredDone && (
                 <span className="muted"> · +{totalDone - requiredDone} opcional</span>
               )}
@@ -200,13 +200,13 @@ export default function UploadScreen({ onContinue, onUseDemo, onUseMock, loading
           <div className="upload-footer-info">
             {!allRequiredReady ? (
               <span className="upload-footer-warning">
-                <AlertCircle size={14} />
-                Faltam {requiredCount - requiredDone} fonte{requiredCount - requiredDone !== 1 ? 's' : ''} obrigatória{requiredCount - requiredDone !== 1 ? 's' : ''} para iniciar a análise
+                {/* <CheckCircle2 size={14} /> */}
+                {/* Faltam {requiredCount - requiredDone} fonte{requiredCount - requiredDone !== 1 ? 's' : ''} obrigatória{requiredCount - requiredDone !== 1 ? 's' : ''} para iniciar a análise */}
               </span>
             ) : (
               <span className="upload-footer-ready">
-                <CheckCircle2 size={14} />
-                Tudo pronto. Os dados serão ingeridos, normalizados e integrados ao iniciar a análise.
+                {/* <CheckCircle2 size={14} /> */}
+                {/* Tudo pronto. Os dados serão ingeridos, normalizados e integrados ao iniciar a análise. */}
               </span>
             )}
           </div>
@@ -219,7 +219,7 @@ export default function UploadScreen({ onContinue, onUseDemo, onUseMock, loading
             )}
             <button className="btn" onClick={onUseDemo} disabled={loading} title="Carrega o JSON pré-processado a partir de /dados/">
               <Sparkles size={14} />
-              {loading ? 'Carregando…' : 'Usar dados reais do projeto'}
+              {loading ? 'Carregando…' : 'Usar dados disponibilizados para o projeto'}
             </button>
             <button
               className="btn btn-primary"
